@@ -1,1 +1,60 @@
-{"$schema":"https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json","name":"drivers_basis","position":{"x":450,"y":20,"z":11,"height":100,"width":500,"tabOrder":11},"visual":{"visualType":"slicer","query":{"queryState":{"Values":{"projections":[{"field":{"Column":{"Expression":{"SourceRef":{"Source":"Budget Type"}},"Property":"Type"}},"queryRef":"Budget Type.Type"}]}}},"visualContainerObjects":{"title":[{"properties":{"show":{"expr":{"Literal":{"Value":"true"}}},"text":{"expr":{"Literal":{"Value":"'Comparison basis'"}}}}}]},"drillFilterOtherVisuals":true}}
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "drivers_basis",
+  "position": {
+    "x": 450,
+    "y": 20,
+    "z": 11,
+    "height": 100,
+    "width": 500,
+    "tabOrder": 11
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Budget Type"
+                    }
+                  },
+                  "Property": "Type"
+                }
+              },
+              "queryRef": "Budget Type.Type",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Comparison basis'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

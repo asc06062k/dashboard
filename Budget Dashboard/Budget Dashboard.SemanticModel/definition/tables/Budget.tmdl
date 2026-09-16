@@ -1,6 +1,140 @@
 table Budget
 	lineageTag: 4f2678c5-05aa-435d-84a6-7dc7f51c75ad
 
+	measure 'Plan Budget' = SUM(Budget[plan_budget])
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Budget
+		lineageTag: 76796b87-51bb-44ff-8bc8-815a7092d547
+
+	measure 'Approved Budget' = SUM(Budget[approve_budget])
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Budget
+		lineageTag: fe7c90b3-2e00-461b-9e13-c0f07b2b2467
+
+	measure 'Actual Spend' = SUM(Budget[actual])
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Actual
+		lineageTag: ef351b13-f8da-4138-8d2c-c79fa4796d55
+
+	measure 'Selected Budget' =
+			VAR Basis = SELECTEDVALUE('Budget Type'[Type], "Approved Budget")
+			RETURN
+				SWITCH(
+					Basis,
+					"Plan Budget", [Plan Budget],
+					"Approved Budget", [Approved Budget],
+					[Approved Budget]
+				)
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Comparison
+		lineageTag: 852c3423-2165-4798-986e-fe805390948c
+
+	measure 'Budget Variance' = [Actual Spend] - [Selected Budget]
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Comparison
+		lineageTag: 68590233-2759-49a1-9e46-fed270c2e02b
+
+	measure 'Budget Variance %' = DIVIDE([Budget Variance], [Selected Budget])
+		formatString: 0.0%;−0.0%;0.0%
+		displayFolder: Comparison
+		lineageTag: 55c807c7-3184-4178-9758-dd173a3952ff
+
+	measure 'Budget Utilization %' = DIVIDE([Actual Spend], [Selected Budget])
+		formatString: 0.0%
+		displayFolder: Comparison
+		lineageTag: 7ac8419f-abc6-41fb-8490-21a62dbaf0dd
+
+	measure 'Remaining Budget' = MAX(0, [Selected Budget] - [Actual Spend])
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Comparison
+		lineageTag: 8d264a1e-331e-48ff-8274-19118eb3aa74
+
+	measure 'Overspend Amount' = MAX(0, [Actual Spend] - [Selected Budget])
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Comparison
+		lineageTag: 3b8df9d3-f508-4acf-af10-f150103e7069
+
+	measure 'Approval Variance' = [Approved Budget] - [Plan Budget]
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Budget
+		lineageTag: 17bc2141-fd46-4114-af80-616c7515ccfc
+
+	measure 'Approval Variance %' = DIVIDE([Approval Variance], [Plan Budget])
+		formatString: 0.0%;−0.0%;0.0%
+		displayFolder: Budget
+		lineageTag: cbd4b7bc-cecc-4819-adfc-6d6d7cb7acd7
+
+	measure 'Budget Coverage %' = DIVIDE([Approved Budget], [Plan Budget])
+		formatString: 0.0%
+		displayFolder: Budget
+		lineageTag: 4b7c03a7-049b-4a3f-81fc-e78b13f01bd5
+
+	measure 'Latest Actual Period' =
+			MAXX(
+				FILTER(ALL(Budget[period]), CALCULATE([Actual Spend]) <> 0),
+				Budget[period]
+			)
+		formatString: dd mmm yyyy
+		displayFolder: Actual
+		lineageTag: ff1feadc-1574-4df7-8988-25f778b38717
+
+	measure 'Selected Budget To Actual Period' =
+			VAR CutoffDate = [Latest Actual Period]
+			RETURN
+				IF(
+					ISBLANK(CutoffDate),
+					BLANK(),
+					CALCULATE([Selected Budget], KEEPFILTERS(Period[Date] <= CutoffDate))
+				)
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Comparison
+		lineageTag: 0631c04c-dd8f-4339-9e6b-7c31bb7f2eb6
+
+	measure 'Variance To Actual Period' = [Actual Spend] - [Selected Budget To Actual Period]
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Comparison
+		lineageTag: 90f635e2-d1fe-49e5-93c6-0fc0553df2b8
+
+	measure 'Variance % To Actual Period' = DIVIDE([Variance To Actual Period], [Selected Budget To Actual Period])
+		formatString: 0.0%;−0.0%;0.0%
+		displayFolder: Comparison
+		lineageTag: 676f521b-cd45-47ce-b707-e8f12e6fc636
+
+	measure 'Utilization % To Actual Period' = DIVIDE([Actual Spend], [Selected Budget To Actual Period])
+		formatString: 0.0%
+		displayFolder: Comparison
+		lineageTag: aeeefab0-01af-436c-a89b-ae7445de9c09
+
+	measure 'Prior Year Actual' = CALCULATE([Actual Spend], DATEADD(Period[Date], -1, YEAR))
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Actual
+		lineageTag: 30a75a63-2de4-4970-be88-f88670a1507d
+
+	measure 'Actual YoY Variance' = [Actual Spend] - [Prior Year Actual]
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Actual
+		lineageTag: 20ba2bd7-faa8-43c6-8477-fb00acc926ba
+
+	measure 'Actual YoY %' = DIVIDE([Actual YoY Variance], [Prior Year Actual])
+		formatString: 0.0%;−0.0%;0.0%
+		displayFolder: Actual
+		lineageTag: e1cd632f-c5c7-4d1f-adab-4a460815d136
+
+	measure 'Budget Status' =
+			VAR VariancePct = [Budget Variance %]
+			RETURN
+				SWITCH(
+					TRUE(),
+					ISBLANK(VariancePct), BLANK(),
+					VariancePct < -0.05, "UNDER BUDGET",
+					VariancePct < 0.10, "ON TRACK",
+					"OVER BUDGET"
+				)
+		displayFolder: Comparison
+		lineageTag: 32310354-7c01-40f9-8a64-11c1faad536a
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
 	column budget_year
 		dataType: int64
 		formatString: 0
@@ -100,119 +234,6 @@ table Budget
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date
-
-	measure 'Plan Budget' = SUM(Budget[plan_budget])
-		formatString: ฿#,0;−฿#,0;฿0
-		displayFolder: Budget
-
-	measure 'Approved Budget' = SUM(Budget[approve_budget])
-		formatString: ฿#,0;−฿#,0;฿0
-		displayFolder: Budget
-
-	measure 'Actual Spend' = SUM(Budget[actual])
-		formatString: ฿#,0;−฿#,0;฿0
-		displayFolder: Actual
-
-	measure 'Selected Budget' =
-			VAR Basis = SELECTEDVALUE('Budget Type'[Type], "Approved Budget")
-			RETURN
-				SWITCH(
-					Basis,
-					"Plan Budget", [Plan Budget],
-					"Approved Budget", [Approved Budget],
-					[Approved Budget]
-				)
-		formatString: ฿#,0;−฿#,0;฿0
-		displayFolder: Comparison
-
-	measure 'Budget Variance' = [Actual Spend] - [Selected Budget]
-		formatString: ฿#,0;−฿#,0;฿0
-		displayFolder: Comparison
-
-	measure 'Budget Variance %' = DIVIDE([Budget Variance], [Selected Budget])
-		formatString: 0.0%;−0.0%;0.0%
-		displayFolder: Comparison
-
-	measure 'Budget Utilization %' = DIVIDE([Actual Spend], [Selected Budget])
-		formatString: 0.0%
-		displayFolder: Comparison
-
-	measure 'Remaining Budget' = MAX(0, [Selected Budget] - [Actual Spend])
-		formatString: ฿#,0;−฿#,0;฿0
-		displayFolder: Comparison
-
-	measure 'Overspend Amount' = MAX(0, [Actual Spend] - [Selected Budget])
-		formatString: ฿#,0;−฿#,0;฿0
-		displayFolder: Comparison
-
-	measure 'Approval Variance' = [Approved Budget] - [Plan Budget]
-		formatString: ฿#,0;−฿#,0;฿0
-		displayFolder: Budget
-
-	measure 'Approval Variance %' = DIVIDE([Approval Variance], [Plan Budget])
-		formatString: 0.0%;−0.0%;0.0%
-		displayFolder: Budget
-
-	measure 'Budget Coverage %' = DIVIDE([Approved Budget], [Plan Budget])
-		formatString: 0.0%
-		displayFolder: Budget
-
-	measure 'Latest Actual Period' =
-			MAXX(
-				FILTER(ALL(Budget[period]), CALCULATE([Actual Spend]) <> 0),
-				Budget[period]
-			)
-		formatString: dd mmm yyyy
-		displayFolder: Actual
-
-	measure 'Selected Budget To Actual Period' =
-			VAR CutoffDate = [Latest Actual Period]
-			RETURN
-				IF(
-					ISBLANK(CutoffDate),
-					BLANK(),
-					CALCULATE([Selected Budget], KEEPFILTERS(Period[Date] <= CutoffDate))
-				)
-		formatString: ฿#,0;−฿#,0;฿0
-		displayFolder: Comparison
-
-	measure 'Variance To Actual Period' = [Actual Spend] - [Selected Budget To Actual Period]
-		formatString: ฿#,0;−฿#,0;฿0
-		displayFolder: Comparison
-
-	measure 'Variance % To Actual Period' = DIVIDE([Variance To Actual Period], [Selected Budget To Actual Period])
-		formatString: 0.0%;−0.0%;0.0%
-		displayFolder: Comparison
-
-	measure 'Utilization % To Actual Period' = DIVIDE([Actual Spend], [Selected Budget To Actual Period])
-		formatString: 0.0%
-		displayFolder: Comparison
-
-	measure 'Prior Year Actual' = CALCULATE([Actual Spend], DATEADD(Period[Date], -1, YEAR))
-		formatString: ฿#,0;−฿#,0;฿0
-		displayFolder: Actual
-
-	measure 'Actual YoY Variance' = [Actual Spend] - [Prior Year Actual]
-		formatString: ฿#,0;−฿#,0;฿0
-		displayFolder: Actual
-
-	measure 'Actual YoY %' = DIVIDE([Actual YoY Variance], [Prior Year Actual])
-		formatString: 0.0%;−0.0%;0.0%
-		displayFolder: Actual
-
-	measure 'Budget Status' =
-			VAR VariancePct = [Budget Variance %]
-			RETURN
-				SWITCH(
-					TRUE(),
-					ISBLANK(VariancePct), BLANK(),
-					VariancePct < -0.05, "UNDER BUDGET",
-					VariancePct < 0.10, "ON TRACK",
-					"OVER BUDGET"
-				)
-		displayFolder: Comparison
-
-		annotation PBI_FormatHint = {"isCustom":true}
 
 	column plan_budget
 		dataType: int64

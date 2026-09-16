@@ -1,1 +1,224 @@
-{"$schema":"https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json","name":"detail_matrix","position":{"x":20,"y":160,"z":5,"height":890,"width":1880,"tabOrder":5},"visual":{"visualType":"pivotTable","query":{"queryState":{"Rows":{"projections":[{"field":{"Column":{"Expression":{"SourceRef":{"Source":"Budget"}},"Property":"budget_group"}},"queryRef":"Budget.budget_group"},{"field":{"Column":{"Expression":{"SourceRef":{"Source":"Budget"}},"Property":"budget_sub_group"}},"queryRef":"Budget.budget_sub_group"},{"field":{"Column":{"Expression":{"SourceRef":{"Source":"Budget"}},"Property":"wbs_element"}},"queryRef":"Budget.wbs_element"},{"field":{"Column":{"Expression":{"SourceRef":{"Source":"Budget"}},"Property":"description"}},"queryRef":"Budget.description"},{"field":{"Column":{"Expression":{"SourceRef":{"Source":"Budget"}},"Property":"detail"}},"queryRef":"Budget.detail"},{"field":{"Column":{"Expression":{"SourceRef":{"Source":"Budget"}},"Property":"planning_type"}},"queryRef":"Budget.planning_type"}]},"Columns":{"projections":[{"field":{"Column":{"Expression":{"SourceRef":{"Source":"Period"}},"Property":"Month Year"}},"queryRef":"Period.Month Year"}]},"Values":{"projections":[{"field":{"Measure":{"Expression":{"SourceRef":{"Source":"Budget"}},"Property":"Plan Budget"}},"queryRef":"Budget.Plan Budget"},{"field":{"Measure":{"Expression":{"SourceRef":{"Source":"Budget"}},"Property":"Approved Budget"}},"queryRef":"Budget.Approved Budget"},{"field":{"Measure":{"Expression":{"SourceRef":{"Source":"Budget"}},"Property":"Actual Spend"}},"queryRef":"Budget.Actual Spend"},{"field":{"Measure":{"Expression":{"SourceRef":{"Source":"Budget"}},"Property":"Budget Variance"}},"queryRef":"Budget.Budget Variance"},{"field":{"Measure":{"Expression":{"SourceRef":{"Source":"Budget"}},"Property":"Budget Variance %"}},"queryRef":"Budget.Budget Variance %"}]}}},"visualContainerObjects":{"title":[{"properties":{"show":{"expr":{"Literal":{"Value":"true"}}},"text":{"expr":{"Literal":{"Value":"'Monthly budget detail and variance (฿)'"}}},"bold":{"expr":{"Literal":{"Value":"true"}}}}}]},"drillFilterOtherVisuals":true}}
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "detail_matrix",
+  "position": {
+    "x": 20,
+    "y": 160,
+    "z": 5,
+    "height": 890,
+    "width": 1880,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Columns": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Period"
+                    }
+                  },
+                  "Property": "Month Year"
+                }
+              },
+              "queryRef": "Period.Month Year",
+              "active": true
+            }
+          ]
+        },
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Budget"
+                    }
+                  },
+                  "Property": "budget_group"
+                }
+              },
+              "queryRef": "Budget.budget_group",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Budget"
+                    }
+                  },
+                  "Property": "budget_sub_group"
+                }
+              },
+              "queryRef": "Budget.budget_sub_group",
+              "active": false
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Budget"
+                    }
+                  },
+                  "Property": "wbs_element"
+                }
+              },
+              "queryRef": "Budget.wbs_element",
+              "active": false
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Budget"
+                    }
+                  },
+                  "Property": "description"
+                }
+              },
+              "queryRef": "Budget.description",
+              "active": false
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Budget"
+                    }
+                  },
+                  "Property": "detail"
+                }
+              },
+              "queryRef": "Budget.detail",
+              "active": false
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Budget"
+                    }
+                  },
+                  "Property": "planning_type"
+                }
+              },
+              "queryRef": "Budget.planning_type",
+              "active": false
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Budget"
+                    }
+                  },
+                  "Property": "Plan Budget"
+                }
+              },
+              "queryRef": "Budget.Plan Budget"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Budget"
+                    }
+                  },
+                  "Property": "Approved Budget"
+                }
+              },
+              "queryRef": "Budget.Approved Budget"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Budget"
+                    }
+                  },
+                  "Property": "Actual Spend"
+                }
+              },
+              "queryRef": "Budget.Actual Spend"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Budget"
+                    }
+                  },
+                  "Property": "Budget Variance"
+                }
+              },
+              "queryRef": "Budget.Budget Variance"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Budget"
+                    }
+                  },
+                  "Property": "Budget Variance %"
+                }
+              },
+              "queryRef": "Budget.Budget Variance %"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Monthly budget detail and variance (฿)'"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
