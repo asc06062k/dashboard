@@ -1,0 +1,29 @@
+{
+  "version": "1.1.0.8",
+  "author": {
+    "name": "ชวลิต ภู่สิทธิกุล",
+    "email": "chawalit@asc.co.th"
+  },
+  "resources": [
+    {
+      "resourceId": "rId0",
+      "sourceType": 5,
+      "file": "resources/budgetFunnelViz9A2DC86BAE054F4286E04C574225B306.pbiviz.json"
+    }
+  ],
+  "visual": {
+    "guid": "budgetFunnelViz9A2DC86BAE054F4286E04C574225B306",
+    "name": "budgetFunnelViz",
+    "displayName": "Budget Funnel by ASC",
+    "version": "1.1.0.8",
+    "description": "Power BI custom visual - Budget Funnel",
+    "supportUrl": "https://www.asc.co.th",
+    "gitHubUrl": "https://github.com/asc06062k/custom-powerbi-viz/budgetFunnelViz",
+    "visualClassName": "Visual"
+  },
+  "metadata": {
+    "pbivizjson": {
+      "resourceId": "rId0"
+    }
+  }
+}

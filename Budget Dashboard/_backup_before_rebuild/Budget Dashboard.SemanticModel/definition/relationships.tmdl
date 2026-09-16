@@ -1,0 +1,4 @@
+relationship ecf729e9-4334-e777-9335-3578158aeb31
+	fromColumn: Budget.period
+	toColumn: Period.Date
+

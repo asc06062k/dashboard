@@ -1,0 +1,29 @@
+{
+  "version": "1.2.3.3",
+  "author": {
+    "name": "ชวลิต ภู่สิทธิกุล",
+    "email": "chawalit@asc.co.th"
+  },
+  "resources": [
+    {
+      "resourceId": "rId0",
+      "sourceType": 5,
+      "file": "resources/bulletChartF14B10EB699C4B03B9968267B6DFE836.pbiviz.json"
+    }
+  ],
+  "visual": {
+    "guid": "bulletChartF14B10EB699C4B03B9968267B6DFE836",
+    "name": "bulletChart",
+    "displayName": "Bullet Chart by ASC",
+    "version": "1.2.3.3",
+    "description": "A bullet chart that compares Actual against Target/Budget across up to 10 categories.",
+    "supportUrl": "https://www.asc.co.th",
+    "gitHubUrl": "https://github.com/asc06062k/custom-powerbi-viz/bulletChart",
+    "visualClassName": "Visual"
+  },
+  "metadata": {
+    "pbivizjson": {
+      "resourceId": "rId0"
+    }
+  }
+}

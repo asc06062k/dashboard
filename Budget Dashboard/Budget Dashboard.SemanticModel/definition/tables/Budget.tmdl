@@ -1,0 +1,288 @@
+table Budget
+	lineageTag: 4f2678c5-05aa-435d-84a6-7dc7f51c75ad
+
+	column budget_year
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f07ebd5-9dae-4101-82f5-964516432da6
+		summarizeBy: sum
+		sourceColumn: budget_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column budget_group
+		dataType: string
+		lineageTag: 8fc82034-4989-4558-8645-d094dda07269
+		summarizeBy: none
+		sourceColumn: budget_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column budget_sub_group
+		dataType: string
+		lineageTag: 4bda9fba-8459-4288-a607-ae7d631c1d57
+		summarizeBy: none
+		sourceColumn: budget_sub_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column wbs_element
+		dataType: string
+		lineageTag: cb074bdb-0768-4ef6-8ecc-ab38151410c5
+		summarizeBy: none
+		sourceColumn: wbs_element
+
+		annotation SummarizationSetBy = Automatic
+
+	column budget_network
+		dataType: string
+		lineageTag: 5f0901d0-53b4-4c69-82c1-48b0a0af1009
+		summarizeBy: none
+		sourceColumn: budget_network
+
+		annotation SummarizationSetBy = Automatic
+
+	column description
+		dataType: string
+		lineageTag: 19f51f77-bc9b-4453-a855-4fae74deae1f
+		summarizeBy: none
+		sourceColumn: description
+
+		annotation SummarizationSetBy = Automatic
+
+	column item
+		dataType: string
+		lineageTag: 7a15139e-3a4c-4895-aaa1-c1ce8fab49ee
+		summarizeBy: sum
+		sourceColumn: item
+
+		annotation SummarizationSetBy = Automatic
+
+	column detail
+		dataType: string
+		lineageTag: c41e6ab2-6511-44a8-ac29-f169ebd50915
+		summarizeBy: none
+		sourceColumn: detail
+
+		annotation SummarizationSetBy = Automatic
+
+	column planning_type
+		dataType: string
+		lineageTag: 9c80e77e-6347-4aba-8a58-46ed04d57f2c
+		summarizeBy: none
+		sourceColumn: planning_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_type
+		dataType: string
+		lineageTag: eb7e3d29-ed26-4858-952e-dba5428e7c24
+		summarizeBy: none
+		sourceColumn: payment_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column budget_owner
+		dataType: string
+		lineageTag: 577ef16a-bce9-4fb8-9631-8612501ee3fc
+		summarizeBy: none
+		sourceColumn: budget_owner
+
+		annotation SummarizationSetBy = Automatic
+
+	column period
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 85378500-ada5-484c-99eb-3e3a7f3e6d3e
+		summarizeBy: none
+		sourceColumn: period
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	measure 'Plan Budget' = SUM(Budget[plan_budget])
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Budget
+
+	measure 'Approved Budget' = SUM(Budget[approve_budget])
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Budget
+
+	measure 'Actual Spend' = SUM(Budget[actual])
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Actual
+
+	measure 'Selected Budget' =
+			VAR Basis = SELECTEDVALUE('Budget Type'[Type], "Approved Budget")
+			RETURN
+				SWITCH(
+					Basis,
+					"Plan Budget", [Plan Budget],
+					"Approved Budget", [Approved Budget],
+					[Approved Budget]
+				)
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Comparison
+
+	measure 'Budget Variance' = [Actual Spend] - [Selected Budget]
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Comparison
+
+	measure 'Budget Variance %' = DIVIDE([Budget Variance], [Selected Budget])
+		formatString: 0.0%;−0.0%;0.0%
+		displayFolder: Comparison
+
+	measure 'Budget Utilization %' = DIVIDE([Actual Spend], [Selected Budget])
+		formatString: 0.0%
+		displayFolder: Comparison
+
+	measure 'Remaining Budget' = MAX(0, [Selected Budget] - [Actual Spend])
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Comparison
+
+	measure 'Overspend Amount' = MAX(0, [Actual Spend] - [Selected Budget])
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Comparison
+
+	measure 'Approval Variance' = [Approved Budget] - [Plan Budget]
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Budget
+
+	measure 'Approval Variance %' = DIVIDE([Approval Variance], [Plan Budget])
+		formatString: 0.0%;−0.0%;0.0%
+		displayFolder: Budget
+
+	measure 'Budget Coverage %' = DIVIDE([Approved Budget], [Plan Budget])
+		formatString: 0.0%
+		displayFolder: Budget
+
+	measure 'Latest Actual Period' =
+			MAXX(
+				FILTER(ALL(Budget[period]), CALCULATE([Actual Spend]) <> 0),
+				Budget[period]
+			)
+		formatString: dd mmm yyyy
+		displayFolder: Actual
+
+	measure 'Selected Budget To Actual Period' =
+			VAR CutoffDate = [Latest Actual Period]
+			RETURN
+				IF(
+					ISBLANK(CutoffDate),
+					BLANK(),
+					CALCULATE([Selected Budget], KEEPFILTERS(Period[Date] <= CutoffDate))
+				)
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Comparison
+
+	measure 'Variance To Actual Period' = [Actual Spend] - [Selected Budget To Actual Period]
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Comparison
+
+	measure 'Variance % To Actual Period' = DIVIDE([Variance To Actual Period], [Selected Budget To Actual Period])
+		formatString: 0.0%;−0.0%;0.0%
+		displayFolder: Comparison
+
+	measure 'Utilization % To Actual Period' = DIVIDE([Actual Spend], [Selected Budget To Actual Period])
+		formatString: 0.0%
+		displayFolder: Comparison
+
+	measure 'Prior Year Actual' = CALCULATE([Actual Spend], DATEADD(Period[Date], -1, YEAR))
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Actual
+
+	measure 'Actual YoY Variance' = [Actual Spend] - [Prior Year Actual]
+		formatString: ฿#,0;−฿#,0;฿0
+		displayFolder: Actual
+
+	measure 'Actual YoY %' = DIVIDE([Actual YoY Variance], [Prior Year Actual])
+		formatString: 0.0%;−0.0%;0.0%
+		displayFolder: Actual
+
+	measure 'Budget Status' =
+			VAR VariancePct = [Budget Variance %]
+			RETURN
+				SWITCH(
+					TRUE(),
+					ISBLANK(VariancePct), BLANK(),
+					VariancePct < -0.05, "UNDER BUDGET",
+					VariancePct < 0.10, "ON TRACK",
+					"OVER BUDGET"
+				)
+		displayFolder: Comparison
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column plan_budget
+		dataType: int64
+		formatString: 0
+		lineageTag: b99a4e27-ae12-4ca3-a2c0-17b19396afd6
+		summarizeBy: sum
+		sourceColumn: plan_budget
+
+		annotation SummarizationSetBy = Automatic
+
+	column approve_budget
+		dataType: int64
+		formatString: 0
+		lineageTag: 39309017-58ee-42d6-b152-5cb05754ab6c
+		summarizeBy: sum
+		sourceColumn: approve_budget
+
+		annotation SummarizationSetBy = Automatic
+
+	column actual
+		dataType: int64
+		formatString: 0
+		lineageTag: 9e92dea8-2aec-4b89-b35b-83d030e027f8
+		summarizeBy: sum
+		sourceColumn: actual
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_datetime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b2c53049-e7a8-4288-ad34-5a887da3beee
+		summarizeBy: none
+		sourceColumn: created_datetime
+
+		annotation SummarizationSetBy = Automatic
+
+	column business_datetime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 42b2e73e-eefd-4e46-8e6a-20554c097a5a
+		summarizeBy: none
+		sourceColumn: business_datetime
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d2bcd98f-1989-44df-b91a-1c8c804a2a32
+		summarizeBy: none
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition Budget = m
+		mode: import
+		source =
+				let
+				  Source = Excel.Workbook(File.Contents("D:\DATA\Dashboard\Budget Dashboard\budget data.xlsx"), null, true),
+				  #"Navigation 1" = Source{[Item = "Budget", Kind = "Sheet"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"budget_year", Int64.Type}, {"budget_group", type text}, {"budget_sub_group", type text}, {"wbs_element", type text}, {"budget_network", type text}, {"description", type text}, {"item", type text}, {"detail", type text}, {"planning_type", type text}, {"payment_type", type text}, {"budget_owner", type text}, {"period", type date}, {"plan_budget", Int64.Type}, {"approve_budget", Int64.Type}, {"actual", Int64.Type}, {"created_datetime", type datetime}, {"business_datetime", type datetime}, {"month", type date}}),
+				  #"Replaced not applicable" = Table.ReplaceValue(#"Changed column type", null, "ไม่เกี่ยวข้อง", Replacer.ReplaceValue, {"budget_network", "item", "detail", "planning_type"})
+				in
+				  #"Replaced not applicable"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

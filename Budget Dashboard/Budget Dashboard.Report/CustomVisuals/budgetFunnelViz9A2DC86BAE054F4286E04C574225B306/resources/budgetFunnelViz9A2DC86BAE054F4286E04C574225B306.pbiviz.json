@@ -1,0 +1,972 @@
+{
+  "visual": {
+    "name": "budgetFunnelViz",
+    "displayName": "Budget Funnel by ASC",
+    "guid": "budgetFunnelViz9A2DC86BAE054F4286E04C574225B306",
+    "visualClassName": "Visual",
+    "version": "1.1.0.8",
+    "description": "Power BI custom visual - Budget Funnel",
+    "supportUrl": "https://www.asc.co.th",
+    "gitHubUrl": "https://github.com/asc06062k/custom-powerbi-viz/budgetFunnelViz"
+  },
+  "author": {
+    "name": "ชวลิต ภู่สิทธิกุล",
+    "email": "chawalit@asc.co.th"
+  },
+  "apiVersion": "5.11.0",
+  "style": "style/visual.less",
+  "stringResources": {},
+  "capabilities": {
+    "privileges": [
+      {
+        "name": "LocalStorage",
+        "essential": false
+      }
+    ],
+    "dataRoles": [
+      {
+        "name": "plan",
+        "displayName": "Plan Budget (Required)",
+        "description": "Required. Add exactly one Plan Budget measure.",
+        "kind": "Measure"
+      },
+      {
+        "name": "approved",
+        "displayName": "Approved Budget (Required)",
+        "description": "Required. Add exactly one Approved Budget measure.",
+        "kind": "Measure"
+      },
+      {
+        "name": "actual",
+        "displayName": "Actual Spend (Required)",
+        "description": "Required. Add exactly one Actual Spend measure.",
+        "kind": "Measure"
+      },
+      {
+        "name": "tooltips",
+        "displayName": "Tooltips",
+        "description": "Additional measures shown in the native Power BI tooltip.",
+        "kind": "Measure"
+      }
+    ],
+    "dataViewMappings": [
+      {
+        "conditions": [
+          {
+            "plan": {
+              "min": 1,
+              "max": 1
+            },
+            "approved": {
+              "max": 1
+            },
+            "actual": {
+              "max": 1
+            },
+            "tooltips": {
+              "max": 20
+            }
+          },
+          {
+            "plan": {
+              "max": 1
+            },
+            "approved": {
+              "min": 1,
+              "max": 1
+            },
+            "actual": {
+              "max": 1
+            },
+            "tooltips": {
+              "max": 20
+            }
+          },
+          {
+            "plan": {
+              "max": 1
+            },
+            "approved": {
+              "max": 1
+            },
+            "actual": {
+              "min": 1,
+              "max": 1
+            },
+            "tooltips": {
+              "max": 20
+            }
+          }
+        ],
+        "categorical": {
+          "values": {
+            "select": [
+              {
+                "for": {
+                  "in": "plan"
+                }
+              },
+              {
+                "for": {
+                  "in": "approved"
+                }
+              },
+              {
+                "for": {
+                  "in": "actual"
+                }
+              },
+              {
+                "for": {
+                  "in": "tooltips"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "objects": {
+      "license": {
+        "displayName": "License",
+        "properties": {
+          "licenseLanguage": {
+            "displayName": "License language",
+            "type": {
+              "enumeration": [
+                {
+                  "value": "en",
+                  "displayName": "English"
+                },
+                {
+                  "value": "th",
+                  "displayName": "Thai"
+                }
+              ]
+            }
+          },
+          "status": {
+            "displayName": "Status",
+            "type": {
+              "text": true
+            }
+          },
+          "licensedTo": {
+            "displayName": "Licensed to",
+            "type": {
+              "text": true
+            }
+          },
+          "licenseId": {
+            "displayName": "License ID",
+            "type": {
+              "text": true
+            }
+          },
+          "storageStatus": {
+            "displayName": "Shared storage",
+            "type": {
+              "text": true
+            }
+          },
+          "licenseKey": {
+            "displayName": "License key",
+            "type": {
+              "text": true
+            }
+          },
+          "clearSavedLicense": {
+            "displayName": "Clear saved license",
+            "type": {
+              "bool": true
+            }
+          }
+        }
+      },
+      "general": {
+        "displayName": "General display",
+        "properties": {
+          "showSideLabels": {
+            "displayName": "Show side labels and values",
+            "type": {
+              "bool": true
+            }
+          },
+          "showArrows": {
+            "displayName": "Show arrows between layers",
+            "type": {
+              "bool": true
+            }
+          },
+          "showBottomRemainLabel": {
+            "displayName": "Show Remaining % below funnel",
+            "type": {
+              "bool": true
+            }
+          },
+          "backgroundColor": {
+            "displayName": "Canvas background color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "backgroundTransparency": {
+            "displayName": "Canvas background transparency (%)",
+            "type": {
+              "numeric": true
+            }
+          }
+        }
+      },
+      "floorIndicator": {
+        "displayName": "Floor indicator",
+        "properties": {
+          "show": {
+            "displayName": "Show",
+            "type": {
+              "bool": true
+            }
+          },
+          "thresholdPercent": {
+            "displayName": "Floor threshold %",
+            "type": {
+              "numeric": true
+            }
+          },
+          "lineColor": {
+            "displayName": "Line color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "lineStyle": {
+            "displayName": "Line style",
+            "type": {
+              "enumeration": [
+                {
+                  "value": "dashed",
+                  "displayName": "Dashed"
+                },
+                {
+                  "value": "solid",
+                  "displayName": "Solid"
+                }
+              ]
+            }
+          },
+          "lineWidth": {
+            "displayName": "Line width (px)",
+            "type": {
+              "numeric": true
+            }
+          }
+        }
+      },
+      "funnel": {
+        "displayName": "Funnel colors and conditional rules",
+        "properties": {
+          "planColor": {
+            "displayName": "Plan layer color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "approvedColor": {
+            "displayName": "Approved default color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "actualColor": {
+            "displayName": "Actual default color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "borderColor": {
+            "displayName": "Layer border color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "borderWidth": {
+            "displayName": "Layer border width (px)",
+            "type": {
+              "numeric": true
+            }
+          },
+          "glow": {
+            "displayName": "Glow strength",
+            "type": {
+              "numeric": true
+            }
+          },
+          "depth": {
+            "displayName": "3D depth",
+            "type": {
+              "numeric": true
+            }
+          },
+          "approvedConditional": {
+            "displayName": "Color Approved by % of Plan",
+            "type": {
+              "bool": true
+            }
+          },
+          "approvedThreshold1": {
+            "displayName": "Approved lower threshold (%) — Low color if value < this",
+            "type": {
+              "numeric": true
+            }
+          },
+          "approvedThreshold2": {
+            "displayName": "Approved upper threshold (%) — High color if value >= this",
+            "type": {
+              "numeric": true
+            }
+          },
+          "approvedColorLow": {
+            "displayName": "Approved Low color (< lower threshold)",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "approvedColorMid": {
+            "displayName": "Approved Mid color (>= lower and < upper)",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "approvedColorHigh": {
+            "displayName": "Approved High color (>= upper threshold)",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "actualConditional": {
+            "displayName": "Color Actual by % of Approved",
+            "type": {
+              "bool": true
+            }
+          },
+          "actualThreshold1": {
+            "displayName": "Actual lower threshold (%) — Low color if value < this",
+            "type": {
+              "numeric": true
+            }
+          },
+          "actualThreshold2": {
+            "displayName": "Actual upper threshold (%) — High color if value >= this",
+            "type": {
+              "numeric": true
+            }
+          },
+          "actualColorLow": {
+            "displayName": "Actual Low color (< lower threshold)",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "actualColorMid": {
+            "displayName": "Actual Mid color (>= lower and < upper)",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "actualColorHigh": {
+            "displayName": "Actual High color (>= upper threshold)",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "plan": {
+        "displayName": "Plan layer label",
+        "properties": {
+          "centerLabel": {
+            "displayName": "Center label text",
+            "type": {
+              "text": true
+            }
+          },
+          "fontFamily": {
+            "displayName": "Font family",
+            "type": {
+              "formatting": {
+                "fontFamily": true
+              }
+            }
+          },
+          "fontSize": {
+            "displayName": "Font size",
+            "type": {
+              "formatting": {
+                "fontSize": true
+              }
+            }
+          },
+          "fontColor": {
+            "displayName": "Font color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "bold": {
+            "displayName": "Bold",
+            "type": {
+              "bool": true
+            }
+          },
+          "background": {
+            "displayName": "Label background color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "showBackground": {
+            "displayName": "Show label background",
+            "type": {
+              "bool": true
+            }
+          },
+          "unit": {
+            "displayName": "Display unit",
+            "type": {
+              "enumeration": [
+                {
+                  "value": "Auto",
+                  "displayName": "Auto"
+                },
+                {
+                  "value": "None",
+                  "displayName": "None"
+                },
+                {
+                  "value": "K",
+                  "displayName": "Thousands (K)"
+                },
+                {
+                  "value": "M",
+                  "displayName": "Millions (M)"
+                },
+                {
+                  "value": "B",
+                  "displayName": "Billions (B)"
+                },
+                {
+                  "value": "T",
+                  "displayName": "Trillions (T)"
+                }
+              ]
+            }
+          },
+          "decimalPlaces": {
+            "displayName": "Value decimal places",
+            "type": {
+              "numeric": true
+            }
+          },
+          "percentDecimalPlaces": {
+            "displayName": "Percent decimal places",
+            "type": {
+              "numeric": true
+            }
+          },
+          "percentPrefix": {
+            "displayName": "Percent prefix",
+            "type": {
+              "text": true
+            }
+          },
+          "percentSuffix": {
+            "displayName": "Percent suffix",
+            "type": {
+              "text": true
+            }
+          }
+        }
+      },
+      "approved": {
+        "displayName": "Approved layer label",
+        "properties": {
+          "centerLabel": {
+            "displayName": "Center label text",
+            "type": {
+              "text": true
+            }
+          },
+          "fontFamily": {
+            "displayName": "Font family",
+            "type": {
+              "formatting": {
+                "fontFamily": true
+              }
+            }
+          },
+          "fontSize": {
+            "displayName": "Font size",
+            "type": {
+              "formatting": {
+                "fontSize": true
+              }
+            }
+          },
+          "fontColor": {
+            "displayName": "Font color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "bold": {
+            "displayName": "Bold",
+            "type": {
+              "bool": true
+            }
+          },
+          "background": {
+            "displayName": "Label background color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "showBackground": {
+            "displayName": "Show label background",
+            "type": {
+              "bool": true
+            }
+          },
+          "unit": {
+            "displayName": "Display unit",
+            "type": {
+              "enumeration": [
+                {
+                  "value": "Auto",
+                  "displayName": "Auto"
+                },
+                {
+                  "value": "None",
+                  "displayName": "None"
+                },
+                {
+                  "value": "K",
+                  "displayName": "Thousands (K)"
+                },
+                {
+                  "value": "M",
+                  "displayName": "Millions (M)"
+                },
+                {
+                  "value": "B",
+                  "displayName": "Billions (B)"
+                },
+                {
+                  "value": "T",
+                  "displayName": "Trillions (T)"
+                }
+              ]
+            }
+          },
+          "decimalPlaces": {
+            "displayName": "Value decimal places",
+            "type": {
+              "numeric": true
+            }
+          },
+          "percentDecimalPlaces": {
+            "displayName": "Percent decimal places",
+            "type": {
+              "numeric": true
+            }
+          },
+          "percentPrefix": {
+            "displayName": "Percent prefix",
+            "type": {
+              "text": true
+            }
+          },
+          "percentSuffix": {
+            "displayName": "Percent suffix",
+            "type": {
+              "text": true
+            }
+          }
+        }
+      },
+      "actual": {
+        "displayName": "Actual layer label",
+        "properties": {
+          "centerLabel": {
+            "displayName": "Center label text",
+            "type": {
+              "text": true
+            }
+          },
+          "fontFamily": {
+            "displayName": "Font family",
+            "type": {
+              "formatting": {
+                "fontFamily": true
+              }
+            }
+          },
+          "fontSize": {
+            "displayName": "Font size",
+            "type": {
+              "formatting": {
+                "fontSize": true
+              }
+            }
+          },
+          "fontColor": {
+            "displayName": "Font color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "bold": {
+            "displayName": "Bold",
+            "type": {
+              "bool": true
+            }
+          },
+          "background": {
+            "displayName": "Label background color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "showBackground": {
+            "displayName": "Show label background",
+            "type": {
+              "bool": true
+            }
+          },
+          "unit": {
+            "displayName": "Display unit",
+            "type": {
+              "enumeration": [
+                {
+                  "value": "Auto",
+                  "displayName": "Auto"
+                },
+                {
+                  "value": "None",
+                  "displayName": "None"
+                },
+                {
+                  "value": "K",
+                  "displayName": "Thousands (K)"
+                },
+                {
+                  "value": "M",
+                  "displayName": "Millions (M)"
+                },
+                {
+                  "value": "B",
+                  "displayName": "Billions (B)"
+                },
+                {
+                  "value": "T",
+                  "displayName": "Trillions (T)"
+                }
+              ]
+            }
+          },
+          "decimalPlaces": {
+            "displayName": "Value decimal places",
+            "type": {
+              "numeric": true
+            }
+          },
+          "percentDecimalPlaces": {
+            "displayName": "Percent decimal places",
+            "type": {
+              "numeric": true
+            }
+          },
+          "percentPrefix": {
+            "displayName": "Percent prefix",
+            "type": {
+              "text": true
+            }
+          },
+          "percentSuffix": {
+            "displayName": "Percent suffix",
+            "type": {
+              "text": true
+            }
+          }
+        }
+      },
+      "labels": {
+        "displayName": "Side labels and values",
+        "properties": {
+          "sideFontFamily": {
+            "displayName": "Side label font family",
+            "type": {
+              "formatting": {
+                "fontFamily": true
+              }
+            }
+          },
+          "sideFontSize": {
+            "displayName": "Side label font size",
+            "type": {
+              "formatting": {
+                "fontSize": true
+              }
+            }
+          },
+          "sideFontColor": {
+            "displayName": "Side label font color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "sideBold": {
+            "displayName": "Bold side labels",
+            "type": {
+              "bool": true
+            }
+          },
+          "sideBackground": {
+            "displayName": "Side label background color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "showSideBackground": {
+            "displayName": "Show side label background",
+            "type": {
+              "bool": true
+            }
+          },
+          "sideLineColor": {
+            "displayName": "Connector line color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "sideLineWidth": {
+            "displayName": "Connector line width (px)",
+            "type": {
+              "numeric": true
+            }
+          },
+          "valueFontFamily": {
+            "displayName": "Value font family",
+            "type": {
+              "formatting": {
+                "fontFamily": true
+              }
+            }
+          },
+          "valueFontSize": {
+            "displayName": "Value font size",
+            "type": {
+              "formatting": {
+                "fontSize": true
+              }
+            }
+          },
+          "valueFontColor": {
+            "displayName": "Value font color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "valueBold": {
+            "displayName": "Bold values",
+            "type": {
+              "bool": true
+            }
+          },
+          "valueBackground": {
+            "displayName": "Value background color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "showValueBackground": {
+            "displayName": "Show value background",
+            "type": {
+              "bool": true
+            }
+          }
+        }
+      },
+      "remaining": {
+        "displayName": "Remaining row",
+        "properties": {
+          "fontFamily": {
+            "displayName": "Font family",
+            "type": {
+              "formatting": {
+                "fontFamily": true
+              }
+            }
+          },
+          "fontSize": {
+            "displayName": "Font size",
+            "type": {
+              "formatting": {
+                "fontSize": true
+              }
+            }
+          },
+          "fontColor": {
+            "displayName": "Font color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "bold": {
+            "displayName": "Bold",
+            "type": {
+              "bool": true
+            }
+          },
+          "background": {
+            "displayName": "Background color",
+            "type": {
+              "fill": {
+                "solid": {
+                  "color": true
+                }
+              }
+            }
+          },
+          "showBackground": {
+            "displayName": "Show background",
+            "type": {
+              "bool": true
+            }
+          }
+        }
+      }
+    },
+    "supportsHighlight": false,
+    "supportsLandingPage": false,
+    "supportsKeyboardFocus": false,
+    "supportsMultiVisualSelection": false,
+    "tooltips": {
+      "supportedTypes": {
+        "default": true,
+        "canvas": true
+      },
+      "roles": [
+        "plan",
+        "approved",
+        "actual",
+        "tooltips"
+      ]
+    }
+  },
+  "content": {
+    "js": "var budgetFunnelViz9A2DC86BAE054F4286E04C574225B306;(()=>{\"use strict\";var e={793(e,t,i){i.r(t)},754(e,t,i){i.d(t,{ColorPicker:()=>u,FontPicker:()=>m,ItemDropdown:()=>p,Model:()=>a,NumUpDown:()=>h,ReadOnlyText:()=>v,SimpleCard:()=>r,St:()=>l,TextInput:()=>g,ToggleSwitch:()=>c});var o=i(639);class s{}class n extends s{}class a{}class l extends s{}class r extends n{}class d extends s{constructor(e){super(),Object.assign(this,e)}getFormattingSlice(e,t){const i=this.type,s=this.name,n={displayName:(0,o.Ld)(this,\"displayName\",t),description:(0,o.Ld)(this,\"description\",t),uid:e+\"-\"+s};return Object.assign(Object.assign({},n),{control:{type:i,properties:this.getFormattingComponent(e,t)},disabled:this.disabled,disabledReason:(0,o.Ld)(this,\"disabledReason\",t)})}getFormattingComponent(e,t){let i=this.value;return(null==i?void 0:i.displayNameKey)&&(i={displayName:null==t?void 0:t.getDisplayName(i.displayNameKey),value:i.value}),{descriptor:o.yp(e,this),value:i}}getRevertToDefaultDescriptor(e){return[{objectName:e,propertyName:this.name}]}setPropertiesValues(e,t){var i;const s=null===(i=null==e?void 0:e[t])||void 0===i?void 0:i[this.name];this.value=o.De(this,s,this.value)}}class c extends d{constructor(e){super(e),this.type=\"ToggleSwitch\"}}class u extends d{constructor(e){super(e),this.type=\"ColorPicker\"}getFormattingComponent(e){return Object.assign(Object.assign({},super.getFormattingComponent(e)),{defaultColor:this.defaultColor,isNoFillItemSupported:this.isNoFillItemSupported})}}class h extends d{constructor(e){super(e),this.type=\"NumUpDown\"}getFormattingComponent(e){return Object.assign(Object.assign({},super.getFormattingComponent(e)),{options:this.options})}}class p extends d{constructor(e){super(e),this.type=\"Dropdown\"}getFormattingComponent(e,t){return Object.assign(Object.assign({},super.getFormattingComponent(e,t)),{items:this.getFormattingItems(t,this.items)})}getFormattingItems(e,t){return t.map(t=>Object.assign(Object.assign({},t),{displayName:(0,o.Ld)(t,\"displayName\",e)}))}setValue(e,t){const i=this.getFormattingItems(t,this.items).find(t=>t.value===e);this.value=i||this.items[0]}}class g extends d{constructor(e){super(e),this.type=\"TextInput\"}getFormattingComponent(e){return Object.assign(Object.assign({},super.getFormattingComponent(e)),{placeholder:this.placeholder})}}class m extends d{constructor(){super(...arguments),this.type=\"FontPicker\"}}class v extends d{constructor(){super(...arguments),this.type=\"ReadOnlyText\"}}},667(e,t,i){var o=i(754),s=i(639);i.d(t,[\"A\",0,class{constructor(e){this.localizationManager=e}populateFormattingSettingsModel(e,t){var i,s;const n=new e,a=null===(i=null==t?void 0:t.metadata)||void 0===i?void 0:i.objects;return a&&(null===(s=n.cards)||void 0===s||s.forEach(e=>{var t;e instanceof o.St&&(null===(t=e.topLevelSlice)||void 0===t||t.setPropertiesValues(a,e.name));const i=e instanceof o.SimpleCard?[e]:e.groups;null==i||i.forEach(t=>{var i,o,s,n;null===(i=t.topLevelSlice)||void 0===i||i.setPropertiesValues(a,e.name),null===(o=null==t?void 0:t.slices)||void 0===o||o.forEach(t=>{null==t||t.setPropertiesValues(a,e.name)}),null===(n=null===(s=null==t?void 0:t.container)||void 0===s?void 0:s.containerItems)||void 0===n||n.forEach(t=>{var i,o;null===(i=null==t?void 0:t.slices)||void 0===i||i.forEach(t=>{null==t||t.setPropertiesValues(a,e.name)}),null===(o=null==t?void 0:t.groups)||void 0===o||o.forEach(t=>{var i,o;null===(i=null==t?void 0:t.topLevelSlice)||void 0===i||i.setPropertiesValues(a,e.name),null===(o=null==t?void 0:t.slices)||void 0===o||o.forEach(t=>{null==t||t.setPropertiesValues(a,e.name)})})})})})),n}buildFormattingModel(e){const t={cards:[]};return e.cards.filter(({visible:e=!0})=>e).forEach(e=>{var i;const n={displayName:(0,s.Ld)(e,\"displayName\",this.localizationManager),description:(0,s.Ld)(e,\"description\",this.localizationManager),disabled:e.disabled,disabledReason:(0,s.Ld)(e,\"disabledReason\",this.localizationManager),groups:[],uid:e.name+\"-card\",analyticsPane:e.analyticsPane},a=e.name;this.setTopLevelToggleSliceClone(e,n,a),null===(i=e.onPreProcess)||void 0===i||i.call(e);const l=e instanceof o.SimpleCard,r=l?[e].filter(({visible:e=!0})=>e):e.groups.filter(({visible:e=!0})=>e);null==r||r.forEach(e=>{const t=this.buildCardGroupInstances(e,n,l,a);n.groups.push(t)}),n.revertToDefaultDescriptors=this.getRevertToDefaultDescriptor(e),t.cards.push(n)}),t}buildCardGroupInstances(e,t,i,o){const n=e.name+\"-group\",a={displayName:i?void 0:(0,s.Ld)(e,\"displayName\",this.localizationManager),description:i?void 0:(0,s.Ld)(e,\"description\",this.localizationManager),slices:[],uid:n,collapsible:e.collapsible,delaySaveSlices:e.delaySaveSlices,disabled:e.disabled,disabledReason:(0,s.Ld)(e,\"disabledReason\",this.localizationManager)},l={};if(e.container){const t=a.uid+\"-container\",i=this.buildContainerGroupInstance(e.container,t,o,l);a.displayName=\"Apply settings to\",a.sliceWithContainer=!1,a.collapsible=!1,a.container=i}return e.slices&&(this.setTopLevelToggleSliceClone(e,null==a.displayName?t:a,o),this.buildFormattingSlices({slices:e.slices,objectName:o,sliceNames:l,formattingSlices:a.slices})),a}buildContainerGroupInstance(e,t,i,o){const n={displayName:(0,s.Ld)(e,\"displayName\",this.localizationManager),description:(0,s.Ld)(e,\"description\",this.localizationManager),containerItems:[],uid:t};return e.containerItems.filter(({visible:e=!0})=>e).forEach(e=>{if(!e)return;const a=e.displayNameKey?e.displayNameKey:e.displayName,l=t+a,r={displayName:(0,s.Ld)(e,\"displayName\",this.localizationManager),slices:[],groups:[],uid:l};e.slices&&this.buildFormattingSlices({slices:e.slices,objectName:i,sliceNames:o,formattingSlices:r.slices}),e.groups&&e.groups.forEach(e=>{const t={displayName:(0,s.Ld)(e,\"displayName\",this.localizationManager),description:(0,s.Ld)(e,\"description\",this.localizationManager),slices:[],uid:e.name+\"-container-group\",collapsible:e.collapsible,delaySaveSlices:e.delaySaveSlices,disabled:e.disabled,disabledReason:(0,s.Ld)(e,\"disabledReason\",this.localizationManager)};this.setTopLevelToggleSliceClone(e,t,i),this.buildFormattingSlices({slices:e.slices,objectName:i,sliceNames:o,formattingSlices:t.slices}),r.groups.push(t)}),n.containerItems.push(r)}),n}buildFormattingSlices({slices:e,objectName:t,sliceNames:i,formattingSlices:o}){null==e||e.filter(({visible:e=!0})=>e).forEach(e=>{const s=null==e?void 0:e.getFormattingSlice(t,this.localizationManager);s&&(void 0===i[e.name]?i[e.name]=0:(i[e.name]++,s.uid=`${s.uid}-${i[e.name]}`),o.push(s))})}getRevertToDefaultDescriptor(e){var t;const i={},s=[];let n,a=[];e instanceof o.St&&e.topLevelSlice&&s.push(...null===(t=e.topLevelSlice)||void 0===t?void 0:t.getRevertToDefaultDescriptor(e.name));const l=e instanceof o.SimpleCard?[e].filter(({visible:e=!0})=>e):e.groups.filter(({visible:e=!0})=>e);return null==l||l.forEach(t=>{var o,l;n=this.getSlicesRevertToDefaultDescriptor(e.name,t.slices,i,t.topLevelSlice),null===(l=null===(o=t.container)||void 0===o?void 0:o.containerItems)||void 0===l||l.forEach(t=>{var o;a=a.concat(this.getSlicesRevertToDefaultDescriptor(e.name,t.slices,i)),null===(o=t.groups)||void 0===o||o.forEach(t=>{a=a.concat(this.getSlicesRevertToDefaultDescriptor(e.name,t.slices,i))})}),s.push(...n.concat(a))}),s}getSlicesRevertToDefaultDescriptor(e,t,i,o){let s=[];return o&&(i[o.name]=!0,s=s.concat(o.getRevertToDefaultDescriptor(e))),null==t||t.forEach(t=>{t&&!i[t.name]&&(i[t.name]=!0,s=s.concat(t.getRevertToDefaultDescriptor(e)))}),s}setTopLevelToggleSliceClone(e,t,i){if(e.topLevelSlice){const o=e.topLevelSlice.getFormattingSlice(i,this.localizationManager);o.suppressDisplayName=!0,t.topLevelToggle=o}}}])},674(e,t,i){i.d(t,{FormattingSettingsService:()=>s.A,formattingSettings:()=>o});var o=i(754),s=i(667)},639(e,t,i){function o(e,t){return{objectName:e,propertyName:t.name,selector:t.selector,altConstantValueSelector:t.altConstantSelector,instanceKind:t.instanceKind}}function s(e,t,i){return null==t||\"object\"==typeof t&&!t.solid?i:t.solid?{value:null==t?void 0:t.solid.color}:\"Dropdown\"===(null==e?void 0:e.type)&&e.items?e.items.find(e=>e.value==t):t}function n(e,t,i){var o;return i&&e[t.toString()+\"Key\"]?i.getDisplayName(e[t.toString()+\"Key\"]):null===(o=e[t])||void 0===o?void 0:o.toString()}i.d(t,{De:()=>s,Ld:()=>n,yp:()=>o})},954(e,t,i){t.BudgetFunnelFormattingModel=void 0;const o=i(674);var s=o.formattingSettings.SimpleCard,n=o.formattingSettings.Model;const a=[{value:\"en\",displayName:\"English\"},{value:\"th\",displayName:\"Thai\"}],l=[{value:\"dashed\",displayName:\"Dashed\"},{value:\"solid\",displayName:\"Solid\"}],r=[{value:\"Auto\",displayName:\"Auto\"},{value:\"None\",displayName:\"None\"},{value:\"K\",displayName:\"Thousands (K)\"},{value:\"M\",displayName:\"Millions (M)\"},{value:\"B\",displayName:\"Billions (B)\"},{value:\"T\",displayName:\"Trillions (T)\"}];class d extends s{constructor(){super(...arguments),this.language=new o.formattingSettings.ItemDropdown({name:\"licenseLanguage\",displayName:\"License language\",items:a,value:a[0]}),this.status=new o.formattingSettings.ReadOnlyText({name:\"status\",displayName:\"Status\",value:\"Trial\"}),this.licensedTo=new o.formattingSettings.ReadOnlyText({name:\"licensedTo\",displayName:\"Licensed to\",value:\"-\"}),this.licenseId=new o.formattingSettings.ReadOnlyText({name:\"licenseId\",displayName:\"License ID\",value:\"-\"}),this.storageStatus=new o.formattingSettings.ReadOnlyText({name:\"storageStatus\",displayName:\"Shared storage\",value:\"Checking...\"}),this.licenseKey=new o.formattingSettings.TextInput({name:\"licenseKey\",displayName:\"License key\",value:\"\",placeholder:\"Paste a license key\"}),this.clearSavedLicense=new o.formattingSettings.ToggleSwitch({name:\"clearSavedLicense\",displayName:\"Clear saved license\",value:!1}),this.name=\"license\",this.displayName=\"License\",this.slices=[this.language,this.status,this.licensedTo,this.licenseId,this.storageStatus,this.licenseKey,this.clearSavedLicense]}}class c extends s{constructor(){super(...arguments),this.showSideLabels=new o.formattingSettings.ToggleSwitch({name:\"showSideLabels\",displayName:\"Show side labels and values\",value:!0}),this.showArrows=new o.formattingSettings.ToggleSwitch({name:\"showArrows\",displayName:\"Show arrows between layers\",value:!0}),this.showBottomRemainLabel=new o.formattingSettings.ToggleSwitch({name:\"showBottomRemainLabel\",displayName:\"Show Remaining below funnel\",value:!0}),this.backgroundColor=new o.formattingSettings.ColorPicker({name:\"backgroundColor\",displayName:\"Canvas background color\",value:{value:\"#F8FAFC\"}}),this.backgroundTransparency=new o.formattingSettings.NumUpDown({name:\"backgroundTransparency\",displayName:\"Canvas background transparency (%)\",value:100}),this.name=\"general\",this.displayName=\"General display\",this.slices=[this.showSideLabels,this.showArrows,this.showBottomRemainLabel,this.backgroundColor,this.backgroundTransparency]}}class u extends s{constructor(){super(...arguments),this.show=new o.formattingSettings.ToggleSwitch({name:\"show\",displayName:\"Show\",value:!0}),this.thresholdPercent=new o.formattingSettings.NumUpDown({name:\"thresholdPercent\",displayName:\"Floor threshold %\",value:14}),this.lineColor=new o.formattingSettings.ColorPicker({name:\"lineColor\",displayName:\"Line color\",value:{value:\"#0891B2\"}}),this.lineStyle=new o.formattingSettings.ItemDropdown({name:\"lineStyle\",displayName:\"Line style\",items:l,value:l[0]}),this.lineWidth=new o.formattingSettings.NumUpDown({name:\"lineWidth\",displayName:\"Line width (px)\",value:1.6}),this.name=\"floorIndicator\",this.displayName=\"Floor indicator\",this.slices=[this.show,this.thresholdPercent,this.lineColor,this.lineStyle,this.lineWidth]}}class h extends s{constructor(){super(...arguments),this.planColor=new o.formattingSettings.ColorPicker({name:\"planColor\",displayName:\"Plan layer color\",value:{value:\"#2563EB\"}}),this.approvedColor=new o.formattingSettings.ColorPicker({name:\"approvedColor\",displayName:\"Approved default color\",value:{value:\"#7C3AED\"}}),this.actualColor=new o.formattingSettings.ColorPicker({name:\"actualColor\",displayName:\"Actual default color\",value:{value:\"#0D9488\"}}),this.borderColor=new o.formattingSettings.ColorPicker({name:\"borderColor\",displayName:\"Layer border color\",value:{value:\"#FFFFFF\"}}),this.borderWidth=new o.formattingSettings.NumUpDown({name:\"borderWidth\",displayName:\"Layer border width (px)\",value:1.2}),this.glow=new o.formattingSettings.NumUpDown({name:\"glow\",displayName:\"Glow strength\",value:10}),this.depth=new o.formattingSettings.NumUpDown({name:\"depth\",displayName:\"3D depth\",value:16}),this.approvedConditional=new o.formattingSettings.ToggleSwitch({name:\"approvedConditional\",displayName:\"Color Approved by % of Plan\",value:!1}),this.approvedThreshold1=new o.formattingSettings.NumUpDown({name:\"approvedThreshold1\",displayName:\"Approved lower threshold (%)\",value:70}),this.approvedThreshold2=new o.formattingSettings.NumUpDown({name:\"approvedThreshold2\",displayName:\"Approved upper threshold (%)\",value:90}),this.approvedColorLow=new o.formattingSettings.ColorPicker({name:\"approvedColorLow\",displayName:\"Approved Low color\",value:{value:\"#DC2626\"}}),this.approvedColorMid=new o.formattingSettings.ColorPicker({name:\"approvedColorMid\",displayName:\"Approved Mid color\",value:{value:\"#D97706\"}}),this.approvedColorHigh=new o.formattingSettings.ColorPicker({name:\"approvedColorHigh\",displayName:\"Approved High color\",value:{value:\"#059669\"}}),this.actualConditional=new o.formattingSettings.ToggleSwitch({name:\"actualConditional\",displayName:\"Color Actual by % of Approved\",value:!1}),this.actualThreshold1=new o.formattingSettings.NumUpDown({name:\"actualThreshold1\",displayName:\"Actual lower threshold (%)\",value:50}),this.actualThreshold2=new o.formattingSettings.NumUpDown({name:\"actualThreshold2\",displayName:\"Actual upper threshold (%)\",value:85}),this.actualColorLow=new o.formattingSettings.ColorPicker({name:\"actualColorLow\",displayName:\"Actual Low color\",value:{value:\"#DC2626\"}}),this.actualColorMid=new o.formattingSettings.ColorPicker({name:\"actualColorMid\",displayName:\"Actual Mid color\",value:{value:\"#D97706\"}}),this.actualColorHigh=new o.formattingSettings.ColorPicker({name:\"actualColorHigh\",displayName:\"Actual High color\",value:{value:\"#059669\"}}),this.name=\"funnel\",this.displayName=\"Funnel colors and conditional rules\",this.slices=[this.planColor,this.approvedColor,this.actualColor,this.borderColor,this.borderWidth,this.glow,this.depth,this.approvedConditional,this.approvedThreshold1,this.approvedThreshold2,this.approvedColorLow,this.approvedColorMid,this.approvedColorHigh,this.actualConditional,this.actualThreshold1,this.actualThreshold2,this.actualColorLow,this.actualColorMid,this.actualColorHigh]}}class p extends s{constructor(e,t,i){super(),this.centerLabel=new o.formattingSettings.TextInput({name:\"centerLabel\",displayName:\"Center label text\",value:\"\",placeholder:\"Label\"}),this.fontFamily=new o.formattingSettings.FontPicker({name:\"fontFamily\",displayName:\"Font family\",value:\"Arial\"}),this.fontSize=new o.formattingSettings.NumUpDown({name:\"fontSize\",displayName:\"Font size\",value:16}),this.fontColor=new o.formattingSettings.ColorPicker({name:\"fontColor\",displayName:\"Font color\",value:{value:\"#FFFFFF\"}}),this.bold=new o.formattingSettings.ToggleSwitch({name:\"bold\",displayName:\"Bold\",value:!0}),this.background=new o.formattingSettings.ColorPicker({name:\"background\",displayName:\"Label background color\",value:{value:\"#000000\"}}),this.showBackground=new o.formattingSettings.ToggleSwitch({name:\"showBackground\",displayName:\"Show label background\",value:!1}),this.unit=new o.formattingSettings.ItemDropdown({name:\"unit\",displayName:\"Display unit\",items:r,value:r[0]}),this.decimalPlaces=new o.formattingSettings.NumUpDown({name:\"decimalPlaces\",displayName:\"Value decimal places\",value:1}),this.percentDecimalPlaces=new o.formattingSettings.NumUpDown({name:\"percentDecimalPlaces\",displayName:\"Percent decimal places\",value:0}),this.percentPrefix=new o.formattingSettings.TextInput({name:\"percentPrefix\",displayName:\"Percent prefix\",value:\"\",placeholder:\"Optional\"}),this.percentSuffix=new o.formattingSettings.TextInput({name:\"percentSuffix\",displayName:\"Percent suffix\",value:\"%\",placeholder:\"%\"}),this.slices=[this.centerLabel,this.fontFamily,this.fontSize,this.fontColor,this.bold,this.background,this.showBackground,this.unit,this.decimalPlaces,this.percentDecimalPlaces,this.percentPrefix,this.percentSuffix],this.name=e,this.displayName=t,this.centerLabel.value=i}}class g extends s{constructor(){super(...arguments),this.sideFontFamily=new o.formattingSettings.FontPicker({name:\"sideFontFamily\",displayName:\"Side label font family\",value:\"Arial\"}),this.sideFontSize=new o.formattingSettings.NumUpDown({name:\"sideFontSize\",displayName:\"Side label font size\",value:14}),this.sideFontColor=new o.formattingSettings.ColorPicker({name:\"sideFontColor\",displayName:\"Side label font color\",value:{value:\"#1E293B\"}}),this.sideBold=new o.formattingSettings.ToggleSwitch({name:\"sideBold\",displayName:\"Bold side labels\",value:!0}),this.sideBackground=new o.formattingSettings.ColorPicker({name:\"sideBackground\",displayName:\"Side label background color\",value:{value:\"#000000\"}}),this.showSideBackground=new o.formattingSettings.ToggleSwitch({name:\"showSideBackground\",displayName:\"Show side label background\",value:!1}),this.sideLineColor=new o.formattingSettings.ColorPicker({name:\"sideLineColor\",displayName:\"Connector line color\",value:{value:\"#94A3B8\"}}),this.sideLineWidth=new o.formattingSettings.NumUpDown({name:\"sideLineWidth\",displayName:\"Connector line width (px)\",value:1}),this.valueFontFamily=new o.formattingSettings.FontPicker({name:\"valueFontFamily\",displayName:\"Value font family\",value:\"Arial\"}),this.valueFontSize=new o.formattingSettings.NumUpDown({name:\"valueFontSize\",displayName:\"Value font size\",value:15}),this.valueFontColor=new o.formattingSettings.ColorPicker({name:\"valueFontColor\",displayName:\"Value font color\",value:{value:\"#1E293B\"}}),this.valueBold=new o.formattingSettings.ToggleSwitch({name:\"valueBold\",displayName:\"Bold values\",value:!0}),this.valueBackground=new o.formattingSettings.ColorPicker({name:\"valueBackground\",displayName:\"Value background color\",value:{value:\"#000000\"}}),this.showValueBackground=new o.formattingSettings.ToggleSwitch({name:\"showValueBackground\",displayName:\"Show value background\",value:!1}),this.name=\"labels\",this.displayName=\"Side labels and values\",this.slices=[this.sideFontFamily,this.sideFontSize,this.sideFontColor,this.sideBold,this.sideBackground,this.showSideBackground,this.sideLineColor,this.sideLineWidth,this.valueFontFamily,this.valueFontSize,this.valueFontColor,this.valueBold,this.valueBackground,this.showValueBackground]}}class m extends s{constructor(){super(...arguments),this.fontFamily=new o.formattingSettings.FontPicker({name:\"fontFamily\",displayName:\"Font family\",value:\"Arial\"}),this.fontSize=new o.formattingSettings.NumUpDown({name:\"fontSize\",displayName:\"Font size\",value:14}),this.fontColor=new o.formattingSettings.ColorPicker({name:\"fontColor\",displayName:\"Font color\",value:{value:\"#1E293B\"}}),this.bold=new o.formattingSettings.ToggleSwitch({name:\"bold\",displayName:\"Bold\",value:!0}),this.background=new o.formattingSettings.ColorPicker({name:\"background\",displayName:\"Background color\",value:{value:\"#000000\"}}),this.showBackground=new o.formattingSettings.ToggleSwitch({name:\"showBackground\",displayName:\"Show background\",value:!1}),this.name=\"remaining\",this.displayName=\"Remaining row\",this.slices=[this.fontFamily,this.fontSize,this.fontColor,this.bold,this.background,this.showBackground]}}t.BudgetFunnelFormattingModel=class extends n{constructor(){super(...arguments),this.license=new d,this.general=new c,this.floorIndicator=new u,this.funnel=new h,this.plan=new p(\"plan\",\"Plan layer label\",\"Plan\"),this.approved=new p(\"approved\",\"Approved layer label\",\"Approved\"),this.actual=new p(\"actual\",\"Actual layer label\",\"of Approved\"),this.labels=new g,this.remaining=new m,this.cards=[this.license,this.general,this.floorIndicator,this.funnel,this.plan,this.approved,this.actual,this.labels,this.remaining]}}},805(e,t){function i(e){const t=e.replace(/-/g,\"+\").replace(/_/g,\"/\").padEnd(4*Math.ceil(e.length/4),\"=\"),i=atob(t),o=new ArrayBuffer(i.length),s=new Uint8Array(o);for(let e=0;e<i.length;e++)s[e]=i.charCodeAt(e);return o}t.qq=t.Dl=t.__=t.Xf=void 0,t.verifyLicenseKey=async function(e){var o;const s=(e||\"\").trim();if(!s)return{valid:!1,reason:\"missing\"};const n=s.split(\".\");if(3!==n.length||n[0]!==t.Xf)return{valid:!1,reason:\"invalid_format\"};if(!(null===(o=globalThis.crypto)||void 0===o?void 0:o.subtle))return{valid:!1,reason:\"unsupported_browser\"};try{const e=i(n[1]),o=i(n[2]),s=await globalThis.crypto.subtle.importKey(\"spki\",function(e){const t=atob(e),i=new ArrayBuffer(t.length),o=new Uint8Array(i);for(let e=0;e<t.length;e++)o[e]=t.charCodeAt(e);return i}(t.qq),{name:\"Ed25519\"},!1,[\"verify\"]);if(!await globalThis.crypto.subtle.verify({name:\"Ed25519\"},s,o,e))return{valid:!1,reason:\"invalid_signature\"};const a=JSON.parse((new TextDecoder).decode(e));return function(e){if(!e||\"object\"!=typeof e||Array.isArray(e))return!1;const i=e;return 1===i.schemaVersion&&i.productId===t.__&&i.majorVersion===t.Dl&&\"pro\"===i.edition&&\"string\"==typeof i.licenseId&&i.licenseId.trim().length>0&&\"string\"==typeof i.licensedTo&&i.licensedTo.trim().length>0&&\"string\"==typeof i.issuedAt&&/^\\d{4}-\\d{2}-\\d{2}$/.test(i.issuedAt)}(a)?{valid:!0,payload:a}:{valid:!1,reason:\"invalid_payload\"}}catch(e){return{valid:!1,reason:\"invalid_payload\"}}},t.Xf=\"FUNNEL1\",t.__=\"BudgetFunnel\",t.Dl=1,t.qq=\"MCowBQYDK2VwAyEABdCoI9jT5RCpwVUxpqwHzC4hOpTthBac83Xrp/EqDKE=\"},848(e,t,i){t.Visual=void 0,i(793);const o=i(674),s=i(805),n=i(954),a={general:{showSideLabels:!0,showArrows:!0,showBottomRemainLabel:!0,backgroundColor:\"#F8FAFC\",backgroundTransparency:100},floorIndicator:{show:!0,thresholdPercent:14,lineColor:\"#0891B2\",lineStyle:\"dashed\",lineWidth:1.6},funnel:{planColor:\"#2563EB\",approvedColor:\"#7C3AED\",actualColor:\"#0D9488\",borderColor:\"#FFFFFF\",borderWidth:1.2,glow:10,depth:16,approvedConditional:!1,approvedThreshold1:70,approvedThreshold2:90,approvedColorLow:\"#DC2626\",approvedColorMid:\"#D97706\",approvedColorHigh:\"#059669\",actualConditional:!1,actualThreshold1:50,actualThreshold2:85,actualColorLow:\"#DC2626\",actualColorMid:\"#D97706\",actualColorHigh:\"#059669\"},plan:{centerLabel:\"Plan\",fontFamily:\"Arial\",fontSize:16,fontColor:\"#FFFFFF\",bold:!0,background:\"#000000\",showBackground:!1,unit:\"Auto\",decimalPlaces:1,percentDecimalPlaces:0,percentPrefix:\"\",percentSuffix:\"%\"},approved:{centerLabel:\"Approved\",fontFamily:\"Arial\",fontSize:16,fontColor:\"#FFFFFF\",bold:!0,background:\"#000000\",showBackground:!1,unit:\"Auto\",decimalPlaces:1,percentDecimalPlaces:0,percentPrefix:\"\",percentSuffix:\"%\"},actual:{centerLabel:\"of Approved\",fontFamily:\"Arial\",fontSize:16,fontColor:\"#FFFFFF\",bold:!0,background:\"#000000\",showBackground:!1,unit:\"Auto\",decimalPlaces:1,percentDecimalPlaces:0,percentPrefix:\"\",percentSuffix:\"%\"},labels:{sideFontFamily:\"Arial\",sideFontSize:14,sideFontColor:\"#1E293B\",sideBold:!0,sideBackground:\"#000000\",showSideBackground:!1,sideLineColor:\"#94A3B8\",sideLineWidth:1,valueFontFamily:\"Arial\",valueFontSize:15,valueFontColor:\"#1E293B\",valueBold:!0,valueBackground:\"#000000\",showValueBackground:!1},remaining:{fontFamily:\"Arial\",fontSize:14,fontColor:\"#1E293B\",bold:!0,background:\"#000000\",showBackground:!1}};function l(e,t,i){var o,s;return(null===(s=null===(o=null==e?void 0:e[t])||void 0===o?void 0:o.solid)||void 0===s?void 0:s.color)||i}function r(e,t,i){return Math.max(t,Math.min(i,e))}function d(e,t,i){const o=null==e?void 0:e[t];return\"number\"==typeof o&&isFinite(o)?o:i}function c(e,t,i){return\"boolean\"==typeof(null==e?void 0:e[t])?e[t]:i}function u(e,t,i){return\"string\"==typeof(null==e?void 0:e[t])?e[t]:i}function h(e,t,i,o,s,n){const a=Math.min(t,i),l=Math.max(t,i);return e<a?o:e<l?s:n}function p(e,t,i){if(!isFinite(e))return\"-\";let o=1,s=\"\";if(\"Auto\"===t){const t=Math.abs(e);t>=1e12?(o=1e12,s=\"T\"):t>=1e9?(o=1e9,s=\"B\"):t>=1e6?(o=1e6,s=\"M\"):t>=1e3&&(o=1e3,s=\"K\")}else\"K\"===t?(o=1e3,s=\"K\"):\"M\"===t?(o=1e6,s=\"M\"):\"B\"===t?(o=1e9,s=\"B\"):\"T\"===t&&(o=1e12,s=\"T\");return(e/o).toLocaleString(void 0,{minimumFractionDigits:i,maximumFractionDigits:i})+s}function g(e,t,i,o){return isFinite(e)?i+e.toLocaleString(void 0,{minimumFractionDigits:t,maximumFractionDigits:t})+o:\"-\"}function m(e){return e.replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\")}class v{constructor(e){this.settings=a,this.lastDataSignature=null,this.licenseKey=\"\",this.configuredLicenseKey=\"\",this.sharedLicenseKey=\"\",this.revokedLicenseKey=\"\",this.licenseInputClearedAfterRevocation=!1,this.reactivatingLicenseKey=\"\",this.licenseResult={valid:!1,reason:\"missing\"},this.licenseChecking=!1,this.licenseVerificationVersion=0,this.licenseStorageAllowed=!1,this.lastUpdateOptions=null,this.licensePollHandle=null,this.licenseLanguage=\"en\",this.host=e.host,this.storageV2Service=this.host.storageV2Service,this.formattingSettingsService=new o.FormattingSettingsService,this.formattingModel=new n.BudgetFunnelFormattingModel,this.root=document.createElement(\"div\"),this.root.className=\"budget-funnel-root\",this.svg=document.createElementNS(\"http://www.w3.org/2000/svg\",\"svg\"),this.svg.setAttribute(\"preserveAspectRatio\",\"none\"),this.root.appendChild(this.svg),this.licenseBadge=document.createElement(\"div\"),this.licenseBadge.className=\"budget-license-badge\",this.licenseNotice=document.createElement(\"div\"),this.licenseNotice.className=\"budget-license-notice\",this.root.appendChild(this.licenseBadge),this.root.appendChild(this.licenseNotice),e.element.appendChild(this.root),this.initializeSharedLicense(),this.licensePollHandle=window.setInterval(()=>this.syncSharedLicense(),2e3)}update(e){var t;this.lastUpdateOptions=e;const i=null===(t=e.dataViews)||void 0===t?void 0:t[0];if(this.formattingModel=this.formattingSettingsService.populateFormattingSettingsModel(n.BudgetFunnelFormattingModel,i),this.licenseLanguage=this.readLicenseLanguage(i),this.readClearSavedLicense(i))return void this.clearSavedLicense();this.configuredLicenseKey=this.readLicenseKey(i),!this.configuredLicenseKey&&this.revokedLicenseKey&&(this.licenseInputClearedAfterRevocation=!0);const o=!!this.configuredLicenseKey&&this.configuredLicenseKey===this.revokedLicenseKey&&this.licenseInputClearedAfterRevocation;o&&(this.reactivatingLicenseKey=this.configuredLicenseKey,this.revokedLicenseKey=\"\",this.licenseInputClearedAfterRevocation=!1),!this.configuredLicenseKey||this.revokedLicenseKey&&!o?this.sharedLicenseKey?this.updateLicense(this.sharedLicenseKey):this.updateLicense(\"\"):this.updateLicense(this.configuredLicenseKey,!0),this.syncLicenseFormattingModel(),this.updateFormattingVisibility(),this.settings=this.isPro()?function(e){var t;const i=(null===(t=null==e?void 0:e.metadata)||void 0===t?void 0:t.objects)||{},o=i.general||{},s=i.floorIndicator||{},n=i.funnel||{},h=i.plan||{},p=i.approved||{},g=i.actual||{},m=i.labels||{},v=i.remaining||{},f=(e,t)=>({centerLabel:u(e,\"centerLabel\",t.centerLabel),fontFamily:u(e,\"fontFamily\",t.fontFamily),fontSize:r(d(e,\"fontSize\",t.fontSize),8,40),fontColor:l(e,\"fontColor\",t.fontColor),bold:c(e,\"bold\",t.bold),background:l(e,\"background\",t.background),showBackground:c(e,\"showBackground\",t.showBackground),unit:u(e,\"unit\",t.unit),decimalPlaces:r(d(e,\"decimalPlaces\",t.decimalPlaces),0,4),percentDecimalPlaces:r(d(e,\"percentDecimalPlaces\",t.percentDecimalPlaces),0,2),percentPrefix:u(e,\"percentPrefix\",t.percentPrefix),percentSuffix:u(e,\"percentSuffix\",t.percentSuffix)});return{general:{showSideLabels:c(o,\"showSideLabels\",a.general.showSideLabels),showArrows:c(o,\"showArrows\",a.general.showArrows),showBottomRemainLabel:c(o,\"showBottomRemainLabel\",a.general.showBottomRemainLabel),backgroundColor:l(o,\"backgroundColor\",a.general.backgroundColor),backgroundTransparency:r(d(o,\"backgroundTransparency\",a.general.backgroundTransparency),0,100)},floorIndicator:{show:c(s,\"show\",a.floorIndicator.show),thresholdPercent:r(d(s,\"thresholdPercent\",a.floorIndicator.thresholdPercent),1,45),lineColor:l(s,\"lineColor\",a.floorIndicator.lineColor),lineStyle:\"solid\"===u(s,\"lineStyle\",a.floorIndicator.lineStyle)?\"solid\":\"dashed\",lineWidth:r(d(s,\"lineWidth\",a.floorIndicator.lineWidth),.5,6)},funnel:{planColor:l(n,\"planColor\",a.funnel.planColor),approvedColor:l(n,\"approvedColor\",a.funnel.approvedColor),actualColor:l(n,\"actualColor\",a.funnel.actualColor),borderColor:l(n,\"borderColor\",a.funnel.borderColor),borderWidth:r(d(n,\"borderWidth\",a.funnel.borderWidth),0,5),glow:r(d(n,\"glow\",a.funnel.glow),0,30),depth:r(d(n,\"depth\",a.funnel.depth),0,40),approvedConditional:c(n,\"approvedConditional\",a.funnel.approvedConditional),approvedThreshold1:d(n,\"approvedThreshold1\",a.funnel.approvedThreshold1),approvedThreshold2:d(n,\"approvedThreshold2\",a.funnel.approvedThreshold2),approvedColorLow:l(n,\"approvedColorLow\",a.funnel.approvedColorLow),approvedColorMid:l(n,\"approvedColorMid\",a.funnel.approvedColorMid),approvedColorHigh:l(n,\"approvedColorHigh\",a.funnel.approvedColorHigh),actualConditional:c(n,\"actualConditional\",a.funnel.actualConditional),actualThreshold1:d(n,\"actualThreshold1\",a.funnel.actualThreshold1),actualThreshold2:d(n,\"actualThreshold2\",a.funnel.actualThreshold2),actualColorLow:l(n,\"actualColorLow\",a.funnel.actualColorLow),actualColorMid:l(n,\"actualColorMid\",a.funnel.actualColorMid),actualColorHigh:l(n,\"actualColorHigh\",a.funnel.actualColorHigh)},plan:f(h,a.plan),approved:f(p,a.approved),actual:f(g,a.actual),labels:{sideFontFamily:u(m,\"sideFontFamily\",a.labels.sideFontFamily),sideFontSize:r(d(m,\"sideFontSize\",a.labels.sideFontSize),8,28),sideFontColor:l(m,\"sideFontColor\",a.labels.sideFontColor),sideBold:c(m,\"sideBold\",a.labels.sideBold),sideBackground:l(m,\"sideBackground\",a.labels.sideBackground),showSideBackground:c(m,\"showSideBackground\",a.labels.showSideBackground),sideLineColor:l(m,\"sideLineColor\",a.labels.sideLineColor),sideLineWidth:r(d(m,\"sideLineWidth\",a.labels.sideLineWidth),0,5),valueFontFamily:u(m,\"valueFontFamily\",a.labels.valueFontFamily),valueFontSize:r(d(m,\"valueFontSize\",a.labels.valueFontSize),8,28),valueFontColor:l(m,\"valueFontColor\",a.labels.valueFontColor),valueBold:c(m,\"valueBold\",a.labels.valueBold),valueBackground:l(m,\"valueBackground\",a.labels.valueBackground),showValueBackground:c(m,\"showValueBackground\",a.labels.showValueBackground)},remaining:{fontFamily:u(v,\"fontFamily\",a.remaining.fontFamily),fontSize:r(d(v,\"fontSize\",a.remaining.fontSize),8,28),fontColor:l(v,\"fontColor\",a.remaining.fontColor),bold:c(v,\"bold\",a.remaining.bold),background:l(v,\"background\",a.remaining.background),showBackground:c(v,\"showBackground\",a.remaining.showBackground)}}}(i):this.getTrialSettings();const s=Math.max(120,e.viewport.width),h=Math.max(120,e.viewport.height);this.root.style.width=`${s}px`,this.root.style.height=`${h}px`,this.render(i,s,h),this.renderLicenseBadge(s,h)}getFormattingModel(){return this.formattingSettingsService.buildFormattingModel(this.formattingModel)}readLicenseKey(e){const t=(null==e?void 0:e.metadata.objects)&&e.metadata.objects.license,i=t&&t.licenseKey;return\"string\"==typeof i?i.trim():\"\"}readLicenseLanguage(e){const t=(null==e?void 0:e.metadata.objects)&&e.metadata.objects.license;return t&&\"th\"===t.licenseLanguage?\"th\":\"en\"}readClearSavedLicense(e){const t=(null==e?void 0:e.metadata.objects)&&e.metadata.objects.license;return!(!t||!0!==t.clearSavedLicense)}isPro(){return this.licenseResult.valid}getTrialSettings(){const e=JSON.parse(JSON.stringify(a));return e.general.showSideLabels=!1,e.general.showArrows=!1,e.floorIndicator.show=!1,e.funnel.glow=0,e.funnel.depth=0,e.funnel.approvedConditional=!1,e.funnel.actualConditional=!1,e}updateLicense(e,t=!1){if(e===this.licenseKey)return;this.licenseKey=e;const i=++this.licenseVerificationVersion;this.licenseChecking=e.length>0,this.licenseResult={valid:!1,reason:e?\"invalid_format\":\"missing\"},e&&(0,s.verifyLicenseKey)(e).then(o=>{if(i!==this.licenseVerificationVersion)return;const s=this.isPro();this.licenseChecking=!1,this.licenseResult=o,o.valid?(this.persistEmbeddedLicenseKey(e),t&&this.saveSharedLicense(e)):this.reactivatingLicenseKey===e&&(this.reactivatingLicenseKey=\"\"),this.syncLicenseFormattingModel(),s!==this.isPro()&&this.lastUpdateOptions?this.update(this.lastUpdateOptions):this.renderLicenseBadge(this.lastUpdateOptions?this.lastUpdateOptions.viewport.width:0,this.lastUpdateOptions?this.lastUpdateOptions.viewport.height:0)})}initializeSharedLicense(){this.storageV2Service&&this.storageV2Service.status().then(e=>{0===e&&(this.licenseStorageAllowed=!0,this.syncLicenseFormattingModel(),this.syncSharedLicense())}).catch(()=>{this.licenseStorageAllowed=!1})}syncSharedLicense(){this.licenseStorageAllowed&&this.storageV2Service&&this.storageV2Service.get(v.LICENSE_STORAGE_KEY).then(e=>{const t=\"string\"==typeof e?e.trim():\"\",i=t.startsWith(v.REVOKED_LICENSE_PREFIX)?t.substring(v.REVOKED_LICENSE_PREFIX.length):\"\",o=i?\"\":t;i&&i===this.reactivatingLicenseKey||o===this.sharedLicenseKey&&i===this.revokedLicenseKey||(this.sharedLicenseKey=o,this.revokedLicenseKey=i,!i||this.configuredLicenseKey!==i&&this.licenseKey!==i?this.configuredLicenseKey||(this.updateLicense(o),this.lastUpdateOptions&&this.update(this.lastUpdateOptions)):(this.updateLicense(\"\"),this.lastUpdateOptions&&this.update(this.lastUpdateOptions)))}).catch(()=>{this.sharedLicenseKey&&(this.sharedLicenseKey=\"\",this.configuredLicenseKey||(this.updateLicense(\"\"),this.lastUpdateOptions&&this.update(this.lastUpdateOptions)))})}saveSharedLicense(e){this.licenseStorageAllowed&&(e!==this.sharedLicenseKey||this.revokedLicenseKey)&&this.storageV2Service.set(v.LICENSE_STORAGE_KEY,e).then(t=>{t.success&&(this.sharedLicenseKey=e,this.revokedLicenseKey=\"\",this.reactivatingLicenseKey===e&&(this.reactivatingLicenseKey=\"\"))}).catch(()=>{})}persistEmbeddedLicenseKey(e){e&&this.configuredLicenseKey!==e&&(this.configuredLicenseKey=e,this.host.persistProperties({merge:[{objectName:\"license\",selector:null,properties:{licenseKey:e}}]}))}clearSavedLicense(){const e=this.licenseKey||this.sharedLicenseKey||this.configuredLicenseKey;this.storageV2Service&&this.licenseStorageAllowed&&(e?this.storageV2Service.set(v.LICENSE_STORAGE_KEY,v.REVOKED_LICENSE_PREFIX+e):this.storageV2Service.remove(v.LICENSE_STORAGE_KEY)),this.sharedLicenseKey=\"\",this.revokedLicenseKey=e,this.licenseInputClearedAfterRevocation=!1,this.reactivatingLicenseKey=\"\",this.configuredLicenseKey=\"\",this.updateLicense(\"\"),this.host.persistProperties({merge:[{objectName:\"license\",selector:null,properties:{licenseKey:\"\",clearSavedLicense:!1}}]})}syncLicenseFormattingModel(){const e=this.formattingModel.license,t=\"th\"===this.licenseLanguage,i=this.licenseResult;e.language.displayName=t?\"ภาษา License\":\"License language\",e.status.displayName=t?\"สถานะ\":\"Status\",e.licensedTo.displayName=t?\"ออก License ให้\":\"Licensed to\",e.storageStatus.displayName=t?\"พื้นที่จัดเก็บร่วม\":\"Shared storage\",e.licenseKey.displayName=t?\"คีย์ License\":\"License key\",e.licenseKey.placeholder=t?\"วางคีย์ License\":\"Paste a license key\",e.clearSavedLicense.displayName=t?\"ล้าง License ที่บันทึกไว้\":\"Clear saved license\",e.status.value=this.licenseChecking?t?\"กำลังตรวจสอบ...\":\"Checking...\":i.valid?\"Pro\":\"Trial\",e.licensedTo.value=i.valid?i.payload.licensedTo:\"-\",e.licenseId.value=i.valid?i.payload.licenseId:\"-\",e.storageStatus.value=this.licenseStorageAllowed?t?\"พร้อมใช้ - ใช้ร่วมกันอัตโนมัติ\":\"Available - shared automatically\":t?\"ไม่พร้อมใช้\":\"Unavailable - per-visual key only\",e.licenseKey.value=this.licenseChecking||i.valid||this.configuredLicenseKey===this.revokedLicenseKey?\"\":this.configuredLicenseKey}updateFormattingVisibility(){const e=this.isPro();this.formattingModel.general.visible=e,this.formattingModel.floorIndicator.visible=e,this.formattingModel.funnel.visible=e,this.formattingModel.plan.visible=e,this.formattingModel.approved.visible=e,this.formattingModel.actual.visible=e,this.formattingModel.labels.visible=e}renderLicenseBadge(e,t){const i=this.licenseResult,o=\"th\"===this.licenseLanguage;if(this.licenseBadge.classList.remove(\"licensed\",\"invalid\"),this.licenseNotice.style.display=\"none\",this.licenseChecking)return this.licenseBadge.style.fontSize=\"\",this.licenseBadge.style.letterSpacing=\"\",void(this.licenseBadge.textContent=o?\"กำลังตรวจ License...\":\"Checking license...\");if(i.valid)return this.licenseBadge.classList.add(\"licensed\"),this.licenseBadge.style.fontSize=\"\",this.licenseBadge.style.letterSpacing=\"\",this.licenseBadge.textContent=\"✓\",void(this.licenseBadge.title=\"Licensed to: \"+i.payload.licensedTo+\"\\nLicense ID: \"+i.payload.licenseId);const s=e||320,n=t||180,a=Math.max(18,Math.min(82,s/8.4,n/3));this.licenseBadge.style.fontSize=a.toFixed(1)+\"px\",this.licenseBadge.style.letterSpacing=Math.max(1,.07*a).toFixed(1)+\"px\",\"reason\"in i&&\"missing\"!==i.reason&&this.licenseBadge.classList.add(\"invalid\"),this.licenseBadge.textContent=o?\"รุ่นทดลอง\":\"TRIAL VERSION\",this.licenseBadge.title=o?\"วางคีย์ License ใน Format pane เพื่อเปิด Pro\":\"Paste a license key in the License card to unlock Pro\";const l=Math.max(10,Math.min(13,s/60,n/30)),r=Math.max(14,Math.min(24,s/35,n/14)),d=Math.max(18,Math.min(48,.08*n));this.licenseNotice.style.setProperty(\"--license-notice-base-size\",l.toFixed(1)+\"px\"),this.licenseNotice.style.setProperty(\"--license-notice-hover-size\",r.toFixed(1)+\"px\"),this.licenseNotice.style.setProperty(\"--license-notice-hover-bottom\",d.toFixed(1)+\"px\"),this.licenseNotice.style.display=\"block\",this.licenseNotice.textContent=o?\"ไม่มี Pro License - กำลังใช้ฟีเจอร์แบบ Trial\":\"No Pro license - using Trial features\"}getStageValues(e){var t,i,o,s;const n=(null===(t=null==e?void 0:e.categorical)||void 0===t?void 0:t.values)||[],a=e=>n.find(t=>{var i,o;return!!(null===(o=null===(i=t.source)||void 0===i?void 0:i.roles)||void 0===o?void 0:o[e])}),l=e=>((null==e?void 0:e.values)?Array.from(e.values):[]).reduce((e,t)=>e+(\"number\"==typeof t&&isFinite(t)?t:0),0),r=a(\"plan\"),d=a(\"approved\"),c=a(\"actual\"),u=l(r),p=l(d),m=l(c),v=0!==u?p/u*100:0,f=0!==p?m/p*100:0,b=this.settings.funnel;return[{key:\"plan\",value:u,fieldName:(null===(i=null==r?void 0:r.source)||void 0===i?void 0:i.displayName)||\"Plan Budget\",ratio:100,ratioText:g(100,this.settings.plan.percentDecimalPlaces,this.settings.plan.percentPrefix,this.settings.plan.percentSuffix),label:this.settings.plan.centerLabel,color:b.planColor},{key:\"approved\",value:p,fieldName:(null===(o=null==d?void 0:d.source)||void 0===o?void 0:o.displayName)||\"Approved Budget\",ratio:v,ratioText:g(v,this.settings.approved.percentDecimalPlaces,this.settings.approved.percentPrefix,this.settings.approved.percentSuffix),label:this.settings.approved.centerLabel,color:b.approvedConditional?h(v,b.approvedThreshold1,b.approvedThreshold2,b.approvedColorLow,b.approvedColorMid,b.approvedColorHigh):b.approvedColor},{key:\"actual\",value:m,fieldName:(null===(s=null==c?void 0:c.source)||void 0===s?void 0:s.displayName)||\"Actual Spend\",ratio:f,ratioText:g(f,this.settings.actual.percentDecimalPlaces,this.settings.actual.percentPrefix,this.settings.actual.percentSuffix),label:this.settings.actual.centerLabel,color:b.actualConditional?h(f,b.actualThreshold1,b.actualThreshold2,b.actualColorLow,b.actualColorMid,b.actualColorHigh):b.actualColor}]}render(e,t,i){for(var o;this.svg.firstChild;)this.svg.removeChild(this.svg.firstChild);const s=this.settings,n=e=>document.createElementNS(\"http://www.w3.org/2000/svg\",e);this.svg.setAttribute(\"viewBox\",`0 0 ${t} ${i}`);const a=(null===(o=null==e?void 0:e.categorical)||void 0===o?void 0:o.values)||[],l=[\"plan\",\"approved\",\"actual\"].every(e=>a.some(t=>{var i,o;return!!(null===(o=null===(i=t.source)||void 0===i?void 0:i.roles)||void 0===o?void 0:o[e])}));if(!l){this.lastDataSignature=null;const e=n(\"text\");return e.setAttribute(\"x\",\"\"+t/2),e.setAttribute(\"y\",\"\"+i/2),e.setAttribute(\"text-anchor\",\"middle\"),e.setAttribute(\"dominant-baseline\",\"middle\"),e.setAttribute(\"fill\",s.labels.sideFontColor),e.setAttribute(\"font-family\",s.labels.sideFontFamily),e.setAttribute(\"font-size\",\"14px\"),e.textContent=\"Please add Plan, Approved, and Actual data.\",void this.svg.appendChild(e)}const d=this.getStageValues(e),c=`${d[0].value}|${d[1].value}|${d[2].value}`,u=null===this.lastDataSignature||this.lastDataSignature!==c;this.lastDataSignature=c;const h=n(\"rect\");h.setAttribute(\"x\",\"0\"),h.setAttribute(\"y\",\"0\"),h.setAttribute(\"width\",`${t}`),h.setAttribute(\"height\",`${i}`),h.setAttribute(\"fill\",s.general.backgroundColor),h.setAttribute(\"fill-opacity\",\"\"+(1-s.general.backgroundTransparency/100)),this.svg.appendChild(h);const v=n(\"defs\"),f=n(\"filter\");f.setAttribute(\"id\",\"bfGlow\"),f.setAttribute(\"x\",\"-30%\"),f.setAttribute(\"y\",\"-30%\"),f.setAttribute(\"width\",\"160%\"),f.setAttribute(\"height\",\"160%\");const b=n(\"feGaussianBlur\");b.setAttribute(\"stdDeviation\",\"\"+s.funnel.glow/3),b.setAttribute(\"result\",\"blur\");const y=n(\"feMerge\"),S=n(\"feMergeNode\");S.setAttribute(\"in\",\"blur\");const w=n(\"feMergeNode\");w.setAttribute(\"in\",\"SourceGraphic\"),y.appendChild(S),y.appendChild(w),f.appendChild(b),f.appendChild(y),v.appendChild(f),this.svg.appendChild(v),d.forEach((e,t)=>{const i=n(\"linearGradient\");i.setAttribute(\"id\",`bfGrad${t}`),i.setAttribute(\"x1\",\"0\"),i.setAttribute(\"y1\",\"0\"),i.setAttribute(\"x2\",\"0\"),i.setAttribute(\"y2\",\"1\");const o=e.color,s=n(\"stop\");s.setAttribute(\"offset\",\"0%\"),s.setAttribute(\"stop-color\",this.lighten(o,.3));const a=n(\"stop\");a.setAttribute(\"offset\",\"22%\"),a.setAttribute(\"stop-color\",this.lighten(o,.08));const l=n(\"stop\");l.setAttribute(\"offset\",\"55%\"),l.setAttribute(\"stop-color\",o);const r=n(\"stop\");r.setAttribute(\"offset\",\"82%\"),r.setAttribute(\"stop-color\",this.darken(o,.18));const d=n(\"stop\");d.setAttribute(\"offset\",\"100%\"),d.setAttribute(\"stop-color\",this.darken(o,.32)),i.appendChild(s),i.appendChild(a),i.appendChild(l),i.appendChild(r),i.appendChild(d),v.appendChild(i)});const C=s.general.showSideLabels?Math.min(.29*t,220):10,A=t/2,L=Math.max(120,t-2*C-34),F=Math.max(22,.1*i),N=Math.min(i-40,.9*i),k=s.general.showArrows?Math.max(14,.02*i):Math.max(4,.008*i),x=Math.max(52,(N-F-2*k)/3),B=L/2,T=[F+x/2,F+x+k+x/2,F+2*(x+k)+x/2],P=B*(s.floorIndicator.thresholdPercent/100),$=r(d[1].ratio/100,0,1),M=r(d[2].ratio/100,0,1),z=B*$,E=z<P,D=Math.max(P,z),K=D*M,I=K<P,R=[B,D,Math.max(P,K)],V=[!1,E,I],O=Math.max(.08*B,.4*R[2]),j=[R[0],R[1],R[2],O];if(d.forEach((e,i)=>{const o=T[i],a=x,l=o-a/2,r=o+a/2,c=j[i],h=j[i+1],g=A-c,v=A+c,f=A-h,b=A+h,y=0===i,S=2===i,w=n(\"g\");w.setAttribute(\"class\",\"budget-funnel-layer\"),w.setAttribute(\"data-layer-index\",`${i}`),this.svg.appendChild(w);const L=n(\"path\");let F;if(L.setAttribute(\"class\",\"budget-funnel-shape\"),S)F=`M ${g} ${l} Q ${A} ${l-4} ${v} ${l} L ${v-.1*c} ${l+.68*a} Q ${A} ${r+10} ${b} ${r} L ${f} ${r} Q ${A} ${r+10} ${g+.1*c} ${l+.68*a} Z`;else if(s.general.showArrows){const e=y?-10:-3,t=Math.min(20,.72*k,.22*a),i=Math.min(18,.3*h,.3*c);F=`M ${g} ${l} Q ${A} ${l+e} ${v} ${l} L ${b} ${r-3} L ${A+i} ${r-3} L ${A} ${r-3+t} L ${A-i} ${r-3} L ${f} ${r-3} Z`}else F=`M ${g} ${l} Q ${A} ${l+(y?-10:-3)} ${v} ${l} L ${b} ${r-3} Q ${A} ${r+3} ${f} ${r-3} Z`;if(L.setAttribute(\"d\",F),L.setAttribute(\"fill\",`url(#bfGrad${i})`),L.setAttribute(\"stroke\",s.funnel.borderColor),L.setAttribute(\"stroke-width\",`${s.funnel.borderWidth}`),L.setAttribute(\"filter\",\"url(#bfGlow)\"),w.appendChild(L),!S&&s.general.showArrows){const e=Math.min(20,.72*k,.22*a),t=Math.min(18,.3*h,.3*c),i=n(\"path\");i.setAttribute(\"d\",`M ${A-t} ${r-3} L ${A} ${r-3+e} L ${A+t} ${r-3}`),i.setAttribute(\"fill\",\"none\"),i.setAttribute(\"stroke\",\"rgba(255,255,255,0.55)\"),i.setAttribute(\"stroke-width\",\"1.4\"),i.setAttribute(\"stroke-linecap\",\"round\"),i.setAttribute(\"stroke-linejoin\",\"round\"),i.setAttribute(\"pointer-events\",\"none\"),w.appendChild(i)}L.style.cursor=\"pointer\",L.style.transformBox=\"fill-box\",L.style.transformOrigin=\"center\",L.style.transition=\"filter 200ms cubic-bezier(0.2,0.8,0.2,1), transform 200ms cubic-bezier(0.2,0.8,0.2,1), stroke 200ms ease, stroke-width 200ms ease\",L.addEventListener(\"mouseenter\",()=>this.setLayerHoverState(i,d)),L.addEventListener(\"mouseleave\",()=>this.setLayerHoverState(null,d));const N=n(\"path\");if(N.setAttribute(\"d\",`M ${g+2} ${l+3} Q ${A} ${l-1} ${v-2} ${l+3} L ${v-.16*c} ${l+9} Q ${A} ${l+13} ${g+.16*c} ${l+9} Z`),N.setAttribute(\"fill\",\"rgba(255,255,255,0.14)\"),N.setAttribute(\"pointer-events\",\"none\"),w.appendChild(N),y){const t=n(\"ellipse\");t.setAttribute(\"cx\",`${A}`),t.setAttribute(\"cy\",`${l}`),t.setAttribute(\"rx\",\"\"+.92*c),t.setAttribute(\"ry\",`${Math.max(4,.05*a)}`),t.setAttribute(\"fill\",this.darken(e.color,.35)),t.setAttribute(\"fill-opacity\",\"0.35\"),t.setAttribute(\"pointer-events\",\"none\"),w.appendChild(t)}s.floorIndicator.show&&V[i]&&this.drawFloorIndicator(w,g,v,l,r),s.general.showSideLabels&&this.drawSideLabel(w,e.fieldName,p(e.value,s[e.key].unit,s[e.key].decimalPlaces),o,t,C,s.labels.valueFontColor);const B=s[e.key],P=A,$=Math.min(1.35*c,170);if(B.showBackground){const e=n(\"rect\");e.setAttribute(\"x\",\"\"+(P-$/2)),e.setAttribute(\"y\",\"\"+(o-1.3*B.fontSize)),e.setAttribute(\"width\",`${$}`),e.setAttribute(\"height\",\"\"+3.4*B.fontSize),e.setAttribute(\"rx\",\"5\"),e.setAttribute(\"fill\",B.background),e.setAttribute(\"fill-opacity\",\"0.45\"),e.setAttribute(\"pointer-events\",\"none\"),w.appendChild(e)}const M=n(\"text\");M.setAttribute(\"x\",`${P}`),M.setAttribute(\"y\",\"\"+(o-2)),M.setAttribute(\"text-anchor\",\"middle\"),M.setAttribute(\"fill\",B.fontColor),M.setAttribute(\"font-family\",B.fontFamily),M.setAttribute(\"font-size\",`${B.fontSize}px`),M.setAttribute(\"font-weight\",B.bold?\"700\":\"400\"),M.setAttribute(\"pointer-events\",\"none\");const z=n(\"tspan\");z.setAttribute(\"class\",\"budget-funnel-percentage\"),z.textContent=m(e.ratioText),z.setAttribute(\"x\",`${P}`),z.setAttribute(\"dy\",\"0\");const E=n(\"tspan\");E.textContent=m(e.label),E.setAttribute(\"x\",`${P}`),E.setAttribute(\"dy\",\"\"+1.2*B.fontSize),M.appendChild(z),M.appendChild(E),w.appendChild(M),u&&\"function\"==typeof w.animate&&(w.style.opacity=\"0\",w.animate([{opacity:0,transform:\"translateY(-18px)\"},{opacity:1,transform:\"translateY(0px)\"}],{duration:480,delay:150*i,easing:\"cubic-bezier(0.22,0.61,0.36,1)\",fill:\"both\"})),this.attachTooltip(L,d,i,V)}),s.general.showBottomRemainLabel){const e=Math.min(i-.45*s.remaining.fontSize-5,N+24),o=d[1].value-d[2].value,n=g(0!==d[1].value?o/d[1].value*100:0,s.actual.percentDecimalPlaces,s.actual.percentPrefix,s.actual.percentSuffix),a=p(o,s.actual.unit,s.actual.decimalPlaces);this.drawRemainingRow(this.svg,\"Remaining\",a,n,e,t,C,A)}}setLayerHoverState(e,t){Array.from(this.svg.querySelectorAll(\".budget-funnel-layer\")).forEach((i,o)=>{var s;null===(s=i.getAnimations)||void 0===s||s.call(i).forEach(e=>e.cancel());const n=e===o,a=null!==e,l=t[o],r=this.settings[l.key],d=i.querySelector(\".budget-funnel-shape\"),c=i.querySelector(\".budget-funnel-percentage\"),u=i.querySelectorAll(\".budget-funnel-side-connector\"),h=i.querySelectorAll(\".budget-funnel-side-label\"),p=i.querySelectorAll(\".budget-funnel-side-value\");i.style.transition=\"opacity 200ms cubic-bezier(0.2,0.8,0.2,1), transform 200ms cubic-bezier(0.2,0.8,0.2,1)\",i.style.transformBox=\"fill-box\",i.style.transformOrigin=\"center\",i.style.opacity=a&&!n?\"0.8\":\"1\",i.style.transform=n?\"translateY(-3px)\":\"translateY(0px)\",d&&(d.style.filter=n?\"url(#bfGlow) brightness(1.08) saturate(1.05) drop-shadow(0 7px 12px rgba(0,0,0,0.22))\":\"url(#bfGlow)\",d.style.transform=n?\"scale(1.01)\":\"scale(1)\",d.setAttribute(\"stroke\",n?\"rgba(255,255,255,0.9)\":this.settings.funnel.borderColor),d.setAttribute(\"stroke-width\",`${n?Math.max(1.8,this.settings.funnel.borderWidth):this.settings.funnel.borderWidth}`)),c&&(c.style.transition=\"font-size 200ms cubic-bezier(0.2,0.8,0.2,1)\",c.setAttribute(\"font-size\",`${n?1.1*r.fontSize:r.fontSize}px`)),u.forEach(e=>{e.style.transition=\"stroke 200ms ease, stroke-width 200ms ease\",e.setAttribute(\"stroke\",n?l.color:this.settings.labels.sideLineColor),e.setAttribute(\"stroke-width\",`${n?Math.max(1.5,this.settings.labels.sideLineWidth+.5):this.settings.labels.sideLineWidth}`)}),h.forEach(e=>{e.style.transition=\"fill 200ms ease\",e.setAttribute(\"fill\",n?l.color:this.settings.labels.sideFontColor)}),p.forEach(e=>{e.style.transition=\"fill 200ms ease\",e.setAttribute(\"fill\",n?l.color:this.settings.labels.valueFontColor)})})}drawFloorIndicator(e,t,i,o,s){const n=e=>document.createElementNS(\"http://www.w3.org/2000/svg\",e),a=this.settings.floorIndicator,l=a.lineColor,r=n(\"line\");r.setAttribute(\"x1\",\"\"+(t-5)),r.setAttribute(\"x2\",\"\"+(t-5)),r.setAttribute(\"y1\",`${o+3}`),r.setAttribute(\"y2\",\"\"+(s-3)),r.setAttribute(\"stroke\",l),r.setAttribute(\"stroke-width\",`${a.lineWidth}`),r.setAttribute(\"pointer-events\",\"none\"),\"dashed\"===a.lineStyle&&r.setAttribute(\"stroke-dasharray\",\"3,3\"),e.appendChild(r);const d=n(\"line\");d.setAttribute(\"x1\",`${i+5}`),d.setAttribute(\"x2\",`${i+5}`),d.setAttribute(\"y1\",`${o+3}`),d.setAttribute(\"y2\",\"\"+(s-3)),d.setAttribute(\"stroke\",l),d.setAttribute(\"stroke-width\",`${a.lineWidth}`),d.setAttribute(\"pointer-events\",\"none\"),\"dashed\"===a.lineStyle&&d.setAttribute(\"stroke-dasharray\",\"3,3\"),e.appendChild(d);const c=n(\"text\");c.setAttribute(\"x\",`${i+5+5}`),c.setAttribute(\"y\",`${o+10}`),c.setAttribute(\"fill\",l),c.setAttribute(\"font-size\",\"11px\"),c.setAttribute(\"font-weight\",\"700\"),c.setAttribute(\"pointer-events\",\"none\"),c.textContent=\"*\",e.appendChild(c)}drawSideLabel(e,t,i,o,s,n,a){const l=this.settings.labels,r=e=>document.createElementNS(\"http://www.w3.org/2000/svg\",e),d=s-18,c=Math.min(n,.3*s),u=s-Math.min(n,.3*s),h=r(\"line\");h.setAttribute(\"class\",\"budget-funnel-side-connector\"),h.setAttribute(\"x1\",`${18+Math.min(150,t.length*l.sideFontSize*.55)}`),h.setAttribute(\"x2\",`${c}`),h.setAttribute(\"y1\",`${o}`),h.setAttribute(\"y2\",`${o}`),h.setAttribute(\"stroke\",l.sideLineColor),h.setAttribute(\"stroke-width\",`${l.sideLineWidth}`),h.setAttribute(\"pointer-events\",\"none\"),e.appendChild(h);const p=r(\"line\");if(p.setAttribute(\"class\",\"budget-funnel-side-connector\"),p.setAttribute(\"x1\",`${u}`),p.setAttribute(\"x2\",\"\"+(d-Math.min(100,i.length*l.valueFontSize*.45))),p.setAttribute(\"y1\",`${o}`),p.setAttribute(\"y2\",`${o}`),p.setAttribute(\"stroke\",l.sideLineColor),p.setAttribute(\"stroke-width\",`${l.sideLineWidth}`),p.setAttribute(\"pointer-events\",\"none\"),e.appendChild(p),l.showSideBackground){const i=r(\"rect\"),s=Math.max(62,t.length*l.sideFontSize*.56+14);i.setAttribute(\"x\",\"11\"),i.setAttribute(\"y\",\"\"+(o-.85*l.sideFontSize)),i.setAttribute(\"width\",`${s}`),i.setAttribute(\"height\",\"\"+1.35*l.sideFontSize),i.setAttribute(\"rx\",\"3\"),i.setAttribute(\"fill\",l.sideBackground),i.setAttribute(\"fill-opacity\",\"0.5\"),i.setAttribute(\"pointer-events\",\"none\"),e.appendChild(i)}const g=r(\"text\");if(g.setAttribute(\"class\",\"budget-funnel-side-label\"),g.setAttribute(\"x\",\"18\"),g.setAttribute(\"y\",`${o+.35*l.sideFontSize}`),g.setAttribute(\"fill\",l.sideFontColor),g.setAttribute(\"font-family\",l.sideFontFamily),g.setAttribute(\"font-size\",`${l.sideFontSize}px`),g.setAttribute(\"font-weight\",l.sideBold?\"700\":\"400\"),g.setAttribute(\"pointer-events\",\"none\"),g.textContent=t,e.appendChild(g),l.showValueBackground){const t=r(\"rect\"),s=Math.max(62,i.length*l.valueFontSize*.56+14);t.setAttribute(\"x\",\"\"+(d-s)),t.setAttribute(\"y\",\"\"+(o-.85*l.valueFontSize)),t.setAttribute(\"width\",`${s}`),t.setAttribute(\"height\",\"\"+1.35*l.valueFontSize),t.setAttribute(\"rx\",\"3\"),t.setAttribute(\"fill\",l.valueBackground),t.setAttribute(\"fill-opacity\",\"0.5\"),t.setAttribute(\"pointer-events\",\"none\"),e.appendChild(t)}const m=r(\"text\");m.setAttribute(\"class\",\"budget-funnel-side-value\"),m.setAttribute(\"x\",`${d}`),m.setAttribute(\"y\",`${o+.35*l.valueFontSize}`),m.setAttribute(\"text-anchor\",\"end\"),m.setAttribute(\"font-family\",l.valueFontFamily),m.setAttribute(\"font-size\",`${l.valueFontSize}px`),m.setAttribute(\"font-weight\",l.valueBold?\"700\":\"400\"),m.setAttribute(\"fill\",a),m.setAttribute(\"pointer-events\",\"none\"),m.textContent=i,e.appendChild(m)}drawRemainingRow(e,t,i,o,s,n,a,l){const r=this.settings.remaining,d=this.settings.labels,c=e=>document.createElementNS(\"http://www.w3.org/2000/svg\",e),u=n-18,h=Math.min(a,.3*n),p=n-Math.min(a,.3*n),g=c(\"line\");g.setAttribute(\"x1\",`${18+Math.min(150,t.length*r.fontSize*.55)}`),g.setAttribute(\"x2\",`${h}`),g.setAttribute(\"y1\",`${s}`),g.setAttribute(\"y2\",`${s}`),g.setAttribute(\"stroke\",d.sideLineColor),g.setAttribute(\"stroke-width\",`${d.sideLineWidth}`),g.setAttribute(\"pointer-events\",\"none\"),e.appendChild(g);const m=c(\"line\");if(m.setAttribute(\"x1\",`${p}`),m.setAttribute(\"x2\",\"\"+(u-Math.min(100,i.length*r.fontSize*.45))),m.setAttribute(\"y1\",`${s}`),m.setAttribute(\"y2\",`${s}`),m.setAttribute(\"stroke\",d.sideLineColor),m.setAttribute(\"stroke-width\",`${d.sideLineWidth}`),m.setAttribute(\"pointer-events\",\"none\"),e.appendChild(m),r.showBackground){const o=Math.max(62,t.length*r.fontSize*.56+14),n=c(\"rect\");n.setAttribute(\"x\",\"11\"),n.setAttribute(\"y\",\"\"+(s-.85*r.fontSize)),n.setAttribute(\"width\",`${o}`),n.setAttribute(\"height\",\"\"+1.35*r.fontSize),n.setAttribute(\"rx\",\"3\"),n.setAttribute(\"fill\",r.background),n.setAttribute(\"fill-opacity\",\"0.5\"),n.setAttribute(\"pointer-events\",\"none\"),e.appendChild(n);const a=Math.max(62,i.length*r.fontSize*.56+14),l=c(\"rect\");l.setAttribute(\"x\",\"\"+(u-a)),l.setAttribute(\"y\",\"\"+(s-.85*r.fontSize)),l.setAttribute(\"width\",`${a}`),l.setAttribute(\"height\",\"\"+1.35*r.fontSize),l.setAttribute(\"rx\",\"3\"),l.setAttribute(\"fill\",r.background),l.setAttribute(\"fill-opacity\",\"0.5\"),l.setAttribute(\"pointer-events\",\"none\"),e.appendChild(l)}const v=r.bold?\"700\":\"400\",f=c(\"text\");f.setAttribute(\"x\",\"18\"),f.setAttribute(\"y\",`${s+.35*r.fontSize}`),f.setAttribute(\"fill\",r.fontColor),f.setAttribute(\"font-family\",r.fontFamily),f.setAttribute(\"font-size\",`${r.fontSize}px`),f.setAttribute(\"font-weight\",v),f.setAttribute(\"pointer-events\",\"none\"),f.textContent=t,e.appendChild(f);const b=c(\"text\");b.setAttribute(\"x\",`${u}`),b.setAttribute(\"y\",`${s+.35*r.fontSize}`),b.setAttribute(\"text-anchor\",\"end\"),b.setAttribute(\"font-family\",r.fontFamily),b.setAttribute(\"font-size\",`${r.fontSize}px`),b.setAttribute(\"font-weight\",v),b.setAttribute(\"fill\",r.fontColor),b.setAttribute(\"pointer-events\",\"none\"),b.textContent=i,e.appendChild(b);const y=c(\"text\");y.setAttribute(\"x\",`${l}`),y.setAttribute(\"y\",`${s+.35*r.fontSize}`),y.setAttribute(\"text-anchor\",\"middle\"),y.setAttribute(\"fill\",r.fontColor),y.setAttribute(\"font-family\",r.fontFamily),y.setAttribute(\"font-size\",`${Math.max(10,r.fontSize-2)}px`),y.setAttribute(\"font-weight\",v),y.setAttribute(\"pointer-events\",\"none\"),y.textContent=o,e.appendChild(y)}attachTooltip(e,t,i,o){const s=()=>{var e,s,n,a;const l=[];t.forEach((e,i)=>{const o=this.settings[e.key];l.push({displayName:`${i+1}. ${e.fieldName}`,value:p(e.value,o.unit,o.decimalPlaces),color:e.color});const s=0===i?`   ${e.fieldName} ratio`:`   % of ${t[i-1].fieldName}`;l.push({displayName:s,value:e.ratioText,color:e.color})}),o[i]&&l.push({displayName:\"*\",value:\"Shape width capped for readability — % above is the true value\"});const r=0!==t[1].value?(t[1].value-t[2].value)/t[1].value*100:0;l.push({displayName:`% Remaining of ${t[1].fieldName}`,value:g(r,this.settings.actual.percentDecimalPlaces,this.settings.actual.percentPrefix,this.settings.actual.percentSuffix),color:t[2].color});const d=((null===(a=null===(n=null===(s=null===(e=this.lastUpdateOptions)||void 0===e?void 0:e.dataViews)||void 0===s?void 0:s[0])||void 0===n?void 0:n.categorical)||void 0===a?void 0:a.values)||[]).filter(e=>{var t,i;return!!(null===(i=null===(t=e.source)||void 0===t?void 0:t.roles)||void 0===i?void 0:i.tooltips)});return d.forEach(e=>{const t=Array.from(e.values||[]).find(e=>null!=e);void 0!==t&&l.push({displayName:e.source.displayName,value:String(t)})}),l},n=this.host.tooltipService;e.addEventListener(\"pointerover\",e=>{n.enabled()&&n.show({coordinates:[e.clientX,e.clientY],isTouchEvent:\"touch\"===e.pointerType,dataItems:s(),identities:[]})}),e.addEventListener(\"pointermove\",e=>{\"touch\"!==e.pointerType&&n.enabled()&&n.move({coordinates:[e.clientX,e.clientY],isTouchEvent:!1,identities:[]})}),e.addEventListener(\"pointerout\",e=>n.hide({immediately:!1,isTouchEvent:\"touch\"===e.pointerType}))}lighten(e,t){return this.mix(e,\"#FFFFFF\",t)}darken(e,t){return this.mix(e,\"#000000\",t)}mix(e,t,i){const o=e=>{const t=e.replace(\"#\",\"\"),i=parseInt(3===t.length?t.split(\"\").map(e=>e+e).join(\"\"):t,16);return[i>>16&255,i>>8&255,255&i]},s=o(e),n=o(t);return`#${s.map((e,t)=>Math.round(e+(n[t]-e)*i)).map(e=>e.toString(16).padStart(2,\"0\")).join(\"\")}`}enumerateObjectInstances(e){const t=this.settings,i=e=>({solid:{color:e}});if(\"license\"===e.objectName){const e=\"th\"===this.licenseLanguage,t=this.licenseResult;return[{objectName:\"license\",displayName:e?\"ใบอนุญาต\":\"License\",properties:{licenseLanguage:this.licenseLanguage,status:this.licenseChecking?e?\"กำลังตรวจสอบ...\":\"Checking...\":t.valid?\"Pro\":\"Trial\",licensedTo:t.valid?t.payload.licensedTo:\"-\",licenseId:t.valid?t.payload.licenseId:\"-\",storageStatus:this.licenseStorageAllowed?e?\"พร้อมใช้ - ใช้ร่วมกันอัตโนมัติ\":\"Available - shared automatically\":e?\"ไม่พร้อมใช้\":\"Unavailable - per-visual key only\",licenseKey:this.configuredLicenseKey,clearSavedLicense:!1},selector:null}]}if(!this.isPro())return[];switch(e.objectName){case\"general\":return[{objectName:\"general\",properties:{showSideLabels:t.general.showSideLabels,showArrows:t.general.showArrows,showBottomRemainLabel:t.general.showBottomRemainLabel,backgroundColor:i(t.general.backgroundColor),backgroundTransparency:t.general.backgroundTransparency},selector:null}];case\"floorIndicator\":return[{objectName:\"floorIndicator\",properties:{show:t.floorIndicator.show,thresholdPercent:t.floorIndicator.thresholdPercent,lineColor:i(t.floorIndicator.lineColor),lineStyle:t.floorIndicator.lineStyle,lineWidth:t.floorIndicator.lineWidth},selector:null}];case\"funnel\":return[{objectName:\"funnel\",properties:{planColor:i(t.funnel.planColor),approvedColor:i(t.funnel.approvedColor),actualColor:i(t.funnel.actualColor),borderColor:i(t.funnel.borderColor),borderWidth:t.funnel.borderWidth,glow:t.funnel.glow,depth:t.funnel.depth,approvedConditional:t.funnel.approvedConditional,approvedThreshold1:t.funnel.approvedThreshold1,approvedThreshold2:t.funnel.approvedThreshold2,approvedColorLow:i(t.funnel.approvedColorLow),approvedColorMid:i(t.funnel.approvedColorMid),approvedColorHigh:i(t.funnel.approvedColorHigh),actualConditional:t.funnel.actualConditional,actualThreshold1:t.funnel.actualThreshold1,actualThreshold2:t.funnel.actualThreshold2,actualColorLow:i(t.funnel.actualColorLow),actualColorMid:i(t.funnel.actualColorMid),actualColorHigh:i(t.funnel.actualColorHigh)},selector:null}];case\"plan\":return[{objectName:\"plan\",properties:this.stageProperties(t.plan),selector:null}];case\"approved\":return[{objectName:\"approved\",properties:this.stageProperties(t.approved),selector:null}];case\"actual\":return[{objectName:\"actual\",properties:this.stageProperties(t.actual),selector:null}];case\"labels\":return[{objectName:\"labels\",properties:{sideFontFamily:t.labels.sideFontFamily,sideFontSize:t.labels.sideFontSize,sideFontColor:i(t.labels.sideFontColor),sideBold:t.labels.sideBold,sideBackground:i(t.labels.sideBackground),showSideBackground:t.labels.showSideBackground,sideLineColor:i(t.labels.sideLineColor),sideLineWidth:t.labels.sideLineWidth,valueFontFamily:t.labels.valueFontFamily,valueFontSize:t.labels.valueFontSize,valueFontColor:i(t.labels.valueFontColor),valueBold:t.labels.valueBold,valueBackground:i(t.labels.valueBackground),showValueBackground:t.labels.showValueBackground},selector:null}];case\"remaining\":return[{objectName:\"remaining\",properties:{fontFamily:t.remaining.fontFamily,fontSize:t.remaining.fontSize,fontColor:i(t.remaining.fontColor),bold:t.remaining.bold,background:i(t.remaining.background),showBackground:t.remaining.showBackground},selector:null}];default:return[]}}stageProperties(e){return{centerLabel:e.centerLabel,fontFamily:e.fontFamily,fontSize:e.fontSize,fontColor:{solid:{color:e.fontColor}},bold:e.bold,background:{solid:{color:e.background}},showBackground:e.showBackground,unit:e.unit,decimalPlaces:e.decimalPlaces,percentDecimalPlaces:e.percentDecimalPlaces,percentPrefix:e.percentPrefix,percentSuffix:e.percentSuffix}}destroy(){null!==this.licensePollHandle&&window.clearInterval(this.licensePollHandle),this.root.remove()}}t.Visual=v,v.LICENSE_STORAGE_KEY=\"budgetFunnelViz.license.v1\",v.REVOKED_LICENSE_PREFIX=\"__REVOKED__:\"}};const t={};function i(o){const s=t[o];if(void 0!==s)return s.exports;const n=t[o]={exports:{}};return e[o](n,n.exports,i),n.exports}i.d=(e,t)=>{if(Array.isArray(t))for(var o=0;o<t.length;){var s=t[o++],n=t[o++];i.o(e,s)?0===n&&o++:0===n?Object.defineProperty(e,s,{enumerable:!0,value:t[o++]}):Object.defineProperty(e,s,{enumerable:!0,get:n})}else for(var s in t)i.o(t,s)&&!i.o(e,s)&&Object.defineProperty(e,s,{enumerable:!0,get:t[s]})},i.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),i.r=e=>{Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:\"Module\"}),Object.defineProperty(e,\"__esModule\",{value:!0})};let o={};(()=>{let e=o;Object.defineProperty(e,\"__esModule\",{value:!0});const t=i(848);var s=window.powerbi,n={name:\"budgetFunnelViz9A2DC86BAE054F4286E04C574225B306\",displayName:\"Budget Funnel by ASC\",class:\"Visual\",apiVersion:\"5.11.0\",create:e=>{if(t.Visual)return new t.Visual(e);throw\"Visual instance not found\"},createModalDialog:(e,t,i)=>{const o=globalThis.dialogRegistry;e in o&&new o[e](t,i)},custom:!0};void 0!==s&&(s.visuals=s.visuals||{},s.visuals.plugins=s.visuals.plugins||{},s.visuals.plugins.budgetFunnelViz9A2DC86BAE054F4286E04C574225B306=n),e.default=n})(),budgetFunnelViz9A2DC86BAE054F4286E04C574225B306=o})();",
+    "css": ".budget-funnel-root {\n  width: 100%;\n  height: 100%;\n  overflow: hidden;\n  position: relative;\n  box-sizing: border-box;\n  user-select: none;\n}\n.budget-funnel-root svg {\n  width: 100%;\n  height: 100%;\n  display: block;\n}\n.budget-license-badge {\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  z-index: 20;\n  width: max-content;\n  max-width: 92%;\n  color: #555;\n  background: transparent;\n  border: 0;\n  overflow: visible;\n  font: 800 32px/1 \"Segoe UI\", Arial, sans-serif;\n  text-align: center;\n  white-space: nowrap;\n  opacity: 0.34;\n  pointer-events: none;\n  transform: translate(-50%, -50%);\n  user-select: none;\n}\n.budget-license-badge.invalid {\n  color: #8a211a;\n  opacity: 0.38;\n}\n.budget-license-badge.licensed {\n  left: auto;\n  top: 6px;\n  right: 6px;\n  display: flex;\n  width: 22px;\n  height: 22px;\n  max-width: none;\n  align-items: center;\n  justify-content: center;\n  color: #fff;\n  background: rgba(46, 125, 50, 0.88);\n  border: 1px solid rgba(27, 94, 32, 0.55);\n  border-radius: 50%;\n  font: 700 13px/1 \"Segoe UI\", Arial, sans-serif;\n  opacity: 1;\n  pointer-events: auto;\n  cursor: help;\n  transform: none;\n}\n.budget-license-notice {\n  position: absolute;\n  left: 50%;\n  bottom: 8px;\n  z-index: 21;\n  display: none;\n  max-width: calc(100% - 24px);\n  padding: 4px 9px;\n  color: #6b4f00;\n  background: rgba(255, 248, 220, 0.92);\n  border: 1px solid rgba(174, 126, 0, 0.35);\n  border-radius: 4px;\n  font: var(--license-notice-base-size, 11px)/1.3 \"Segoe UI\", Arial, sans-serif;\n  text-align: center;\n  white-space: nowrap;\n  pointer-events: auto;\n  cursor: help;\n  transform: translateX(-50%);\n  transition: bottom 0.18s ease, padding 0.18s ease, font-size 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;\n}\n.budget-license-notice:hover {\n  bottom: var(--license-notice-hover-bottom, 28px);\n  max-width: calc(100% - 32px);\n  padding: 8px 14px;\n  font-size: var(--license-notice-hover-size, 18px);\n  white-space: normal;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);\n  transform: translateX(-50%) scale(1.03);\n}\n\n",
+    "iconBase64": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH6ggeDQ0pBHmMWwAAAodJREFUOI2llE1rFFkUhp9z7q1Kd2w7kfmw8XsQg4iMixEGBkEXfvwAN65cCOJWcCG4Fd1mspP8BRVEXPgxm1kIiszAuBwV1KB2CNG06XS6u/re46I0Jt3VinjhQN1b533OOS9VV2o3m0dMYlWEyLAVgBdlCG54iqEmLHqzbFqr4ztodwAZzBQDVcz5j/tioEshNnszXlXO0OneiUsNMCsGBsVaP0DQfD+YhIpguNMC8PONt7db5Q3HssWlwQYECEJ8PpqP3p9gkKyD0SzenTvnjnmAqrXOH+r+d1C0XSIUWGlAkoLKGqAB4hRTOv/Y3vNzq+vFq79MSqVyloWsoAuD5vtBSwyoOmy5OaWnGmcB/MpLXX/ZWv6EjKQ1uv1dGlhvEJgKtswsvncJGjlmhXf88RxRLzLiIAjEj7HyHCGGtTEigF7Uk7Nznzh+dUGZD9PPypyKNf9b1gz5GWAmdHtjWPzshl/n8Z3ev7sr7ek1jL7Z2Prq98M/offCUsSiIWKEkPCyvocQEkQMRJDRhMWgRznw573Veu0Hzmx++FdYtmvJuEMtT1Dyzy8PQ6sj0O1d74cVAnOvwwVasekSyaEGDsNheK9oO2umLl4o0hYCH+189CQGJpdqjndjsFAV3lUdjTFPY2MZi3Fq/sCV/4u0vugQYP+DbGriDadLwWrtTod6fRYhJUupP93iJ28N0Q351SGyqcS2Hx9LIrtiZszXR0mjR2N8UonPf1Vet7+pQyYqfrks6hWambDQciTRYah2wnZP43WhrNDD71lfA0rRDfklwdCRRdUUSonzjEcjiCeVhIZ1S1HSokvx69W6+/b9EROthUzi25mKpHjtxVDfvPD3/WGaD7m8EaBw5ISNAAAAAElFTkSuQmCC"
+  },
+  "visualEntryPoint": "",
+  "externalJS": [],
+  "assets": {
+    "icon": "assets/icon.png"
+  }
+}

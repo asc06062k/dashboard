@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "subgroup_arrow",
+  "position": { "x": 640, "y": 190, "z": 11, "height": 370, "width": 610, "tabOrder": 11 },
+  "visual": {
+    "visualType": "ArrowBars3D3600DDDF8166494095CCE8C21FE01249",
+    "query": { "queryState": {
+      "category": { "projections": [ { "field": { "Column": { "Expression": { "SourceRef": { "Source": "Budget" } }, "Property": "budget_sub_group" } }, "queryRef": "Budget.budget_sub_group" } ] },
+      "measure": { "projections": [ { "field": { "Measure": { "Expression": { "SourceRef": { "Source": "Budget" } }, "Property": "Actual Spend" } }, "queryRef": "Budget.Actual Spend" } ] },
+      "target": { "projections": [ { "field": { "Measure": { "Expression": { "SourceRef": { "Source": "Budget" } }, "Property": "Selected Budget" } }, "queryRef": "Budget.Selected Budget" } ] },
+      "tooltips": { "projections": [
+        { "field": { "Measure": { "Expression": { "SourceRef": { "Source": "Budget" } }, "Property": "Budget Variance" } }, "queryRef": "Budget.Budget Variance" },
+        { "field": { "Measure": { "Expression": { "SourceRef": { "Source": "Budget" } }, "Property": "Budget Variance %" } }, "queryRef": "Budget.Budget Variance %" }
+      ] }
+    } },
+    "objects": {
+      "license": [ { "properties": { "licenseKey": { "expr": { "Literal": { "Value": "'ARROW3.eyJzY2hlbWFWZXJzaW9uIjoxLCJsaWNlbnNlSWQiOiJBUlItMjAyNjA5MDMtNlBVM0Q3NzQiLCJwcm9kdWN0SWQiOiJBcnJvd0JhcnMzRCIsIm1ham9yVmVyc2lvbiI6MywiZWRpdGlvbiI6InBybyIsImlzc3VlZFRvIjoiUFRURVAgUzEgTEFORCBieSBBU0MiLCJpc3N1ZWRBdCI6IjIwMjYtMDktMDMifQ.clx1m3OMoqPpBF-qgvspwGSWjovzjLfLYn1Als6h4h6PxsayzjLnxlN392QhGly_7UqDPU1bf-3h8DPoEwlKBw'" } } } } } ],
+      "conditionalFormat": [ { "properties": { "enabled": { "expr": { "Literal": { "Value": "true" } } }, "basedOn": { "expr": { "Literal": { "Value": "'ratio'" } } }, "mode": { "expr": { "Literal": { "Value": "'rules'" } } }, "redUpTo": { "expr": { "Literal": { "Value": "90D" } } }, "yellowUpTo": { "expr": { "Literal": { "Value": "100D" } } } } } ]
+    },
+    "visualContainerObjects": { "title": [ { "properties": { "show": { "expr": { "Literal": { "Value": "true" } } }, "text": { "expr": { "Literal": { "Value": "'Actual vs selected budget by sub-group'" } } }, "bold": { "expr": { "Literal": { "Value": "true" } } } } } ] },
+    "drillFilterOtherVisuals": true
+  }
+}

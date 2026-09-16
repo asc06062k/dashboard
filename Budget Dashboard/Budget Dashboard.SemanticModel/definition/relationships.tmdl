@@ -1,0 +1,4 @@
+relationship Budget_Period
+	fromColumn: Budget.period
+	toColumn: Period.Date
+

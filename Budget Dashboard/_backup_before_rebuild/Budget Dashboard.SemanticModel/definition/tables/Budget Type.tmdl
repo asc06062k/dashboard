@@ -1,0 +1,43 @@
+table 'Budget Type'
+	lineageTag: 27f372e2-7c84-4a36-bc95-6dcbcaa26cfa
+
+	column Type
+		dataType: string
+		lineageTag: 00f904da-a31d-4755-9dd1-90249272283e
+		summarizeBy: none
+		sourceColumn: Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Short
+		dataType: string
+		lineageTag: 5e545fdf-ee1f-4531-aadb-192602c77d04
+		summarizeBy: none
+		sourceColumn: Short
+
+		annotation SummarizationSetBy = Automatic
+
+	column Abbr
+		dataType: string
+		lineageTag: f0962851-b5b7-4aea-bdcd-d6d826653b1a
+		summarizeBy: none
+		sourceColumn: Abbr
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Budget Type' = m
+		mode: import
+		source =
+				let
+				  Source = Excel.Workbook(File.Contents("D:\DATA\Dashboard\Budget Dashboard\budget data.xlsx"), null, true),
+				  #"Navigation 1" = Source{[Item = "Budget Type", Kind = "Sheet"]}[Data],
+				  #"Changed column type" = Table.TransformColumnTypes(#"Navigation 1", {{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed column type", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Type", type text}, {"Short", type text}, {"Abbr", type text}})
+				in
+				  #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

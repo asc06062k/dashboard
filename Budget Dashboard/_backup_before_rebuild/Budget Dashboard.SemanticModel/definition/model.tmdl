@@ -1,0 +1,21 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["Budget","Budget Type","Period"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Budget
+ref table 'Budget Type'
+ref table Period
+
+ref cultureInfo en-US
+

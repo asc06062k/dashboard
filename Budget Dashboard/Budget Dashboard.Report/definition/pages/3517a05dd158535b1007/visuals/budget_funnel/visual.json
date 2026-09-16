@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "budget_funnel",
+  "position": { "x": 20, "y": 190, "z": 10, "height": 370, "width": 600, "tabOrder": 10 },
+  "visual": {
+    "visualType": "budgetFunnelViz9A2DC86BAE054F4286E04C574225B306",
+    "query": { "queryState": {
+      "plan": { "projections": [ { "field": { "Measure": { "Expression": { "SourceRef": { "Source": "Budget" } }, "Property": "Plan Budget" } }, "queryRef": "Budget.Plan Budget" } ] },
+      "approved": { "projections": [ { "field": { "Measure": { "Expression": { "SourceRef": { "Source": "Budget" } }, "Property": "Approved Budget" } }, "queryRef": "Budget.Approved Budget" } ] },
+      "actual": { "projections": [ { "field": { "Measure": { "Expression": { "SourceRef": { "Source": "Budget" } }, "Property": "Actual Spend" } }, "queryRef": "Budget.Actual Spend" } ] },
+      "tooltips": { "projections": [
+        { "field": { "Measure": { "Expression": { "SourceRef": { "Source": "Budget" } }, "Property": "Budget Variance" } }, "queryRef": "Budget.Budget Variance" },
+        { "field": { "Measure": { "Expression": { "SourceRef": { "Source": "Budget" } }, "Property": "Budget Utilization %" } }, "queryRef": "Budget.Budget Utilization %" }
+      ] }
+    } },
+    "objects": { "license": [ { "properties": { "licenseKey": { "expr": { "Literal": { "Value": "'FUNNEL1.eyJzY2hlbWFWZXJzaW9uIjoxLCJsaWNlbnNlSWQiOiJCR0YtMjAyNjA5MDMtODg3OFNHVFEiLCJwcm9kdWN0SWQiOiJCdWRnZXRGdW5uZWwiLCJtYWpvclZlcnNpb24iOjEsImVkaXRpb24iOiJwcm8iLCJsaWNlbnNlZFRvIjoiUFRURVAgUzEgTEFORCBieSBBU0MiLCJpc3N1ZWRBdCI6IjIwMjYtMDktMDMifQ.4_c69yfOLagVLChlyVmFP7uv9Nl74bUNaAraQnLLYrQmE6nkM0jIfwPppYrfys9oPkbzjBf1Cof8HsLzXsWtDA'" } } } } } ] },
+    "visualContainerObjects": { "title": [ { "properties": { "show": { "expr": { "Literal": { "Value": "true" } } }, "text": { "expr": { "Literal": { "Value": "'Budget flow: Plan → Approved → Actual'" } } }, "bold": { "expr": { "Literal": { "Value": "true" } } } } } ] },
+    "drillFilterOtherVisuals": true
+  }
+}

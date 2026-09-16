@@ -1,0 +1,31 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "75b7045c802d93dd78ae",
+  "position": {
+    "x": 10,
+    "y": 0,
+    "z": 0,
+    "height": 280,
+    "width": 280,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "ArrowBars3D3600DDDF8166494095CCE8C21FE01249",
+    "objects": {
+      "license": [
+        {
+          "properties": {
+            "licenseKey": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ARROW3.eyJzY2hlbWFWZXJzaW9uIjoxLCJsaWNlbnNlSWQiOiJBUlItMjAyNjA5MDMtNlBVM0Q3NzQiLCJwcm9kdWN0SWQiOiJBcnJvd0JhcnMzRCIsIm1ham9yVmVyc2lvbiI6MywiZWRpdGlvbiI6InBybyIsImxpY2Vuc2VkVG8iOiJQVFRFUCBTMSBMQU5EIGJ5IEFTQyIsImlzc3VlZEF0IjoiMjAyNi0wOS0wMyJ9.clx1m3OMoqPpBF-qgvspwGSWjovzjLfLYn1Als6h4h6PxsayzjLnxlN392QhGly_7UqDPU1bf-3h8DPoEwlKBw'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

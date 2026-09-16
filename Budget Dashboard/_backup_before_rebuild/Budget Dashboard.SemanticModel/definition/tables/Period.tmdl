@@ -1,0 +1,112 @@
+table Period
+	lineageTag: f169ed38-167e-4fcf-adf2-dd70dbe68fc0
+
+	column Date
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 3cdceb29-f0c0-409b-91ed-0f93e1af3358
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: d723fa41-43a4-4167-8a82-9c9e5bc6cb01
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		lineageTag: c167c5f7-e691-43c5-8caa-2b818de2aa78
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearQuarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 55459144-fa54-4704-b330-72c6c65b552c
+		summarizeBy: none
+		sourceColumn: YearQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: f6d220f2-05b3-4105-a4db-f16181d39b4f
+		summarizeBy: none
+		sourceColumn: YearMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Num'
+		dataType: int64
+		formatString: 0
+		lineageTag: 53b81653-498a-4ebe-9156-e50ddc28953b
+		summarizeBy: none
+		sourceColumn: Month Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter Year'
+		dataType: string
+		lineageTag: a411dc93-c620-4a4b-a591-c9eab229f1e4
+		summarizeBy: none
+		sourceColumn: Quarter Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Year'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1783e3e0-f83b-4e9f-b3e1-f303152d800a
+		summarizeBy: none
+		sourceColumn: Month Year
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Quarter
+		dataType: string
+		lineageTag: aaf29191-5995-411e-856c-bd61b38e37eb
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column __le_current_year
+		dataType: string
+		lineageTag: 9ae6248a-0332-43ab-b7dd-ceccb6aa6d97
+		summarizeBy: none
+		sourceColumn: __le_current_year
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Period = m
+		mode: import
+		source =
+				let
+				  Source = Excel.Workbook(File.Contents("D:\DATA\Dashboard\Budget Dashboard\budget data.xlsx"), null, true),
+				  #"Navigation 1" = Source{[Item = "Period", Kind = "Sheet"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				    #"Changed Type with Locale" = Table.TransformColumnTypes(#"Promoted headers", {{"Date", type date}}, "en-US"),
+				    #"Changed column type" = Table.TransformColumnTypes(#"Changed Type with Locale", {{"Date", type date}, {"Year", Int64.Type}, {"Month", type text}, {"YearQuarter", Int64.Type}, {"YearMonth", Int64.Type}, {"Month Num", Int64.Type}, {"Quarter Year", type text}, {"Month Year", type date}, {"Quarter", type text}, {"__le_current_year", type text}}),
+				    #"Sorted Rows1" = Table.Sort(#"Changed column type",{{"Date", Order.Ascending}})
+				in
+				  #"Sorted Rows1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

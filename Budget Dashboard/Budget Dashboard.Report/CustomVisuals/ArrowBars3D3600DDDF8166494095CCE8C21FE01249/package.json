@@ -1,0 +1,29 @@
+{
+  "version": "3.8.2.3",
+  "author": {
+    "name": "ชวลิต ภู่สิทธิกุล",
+    "email": "chawalit@asc.co.th"
+  },
+  "resources": [
+    {
+      "resourceId": "rId0",
+      "sourceType": 5,
+      "file": "resources/ArrowBars3D3600DDDF8166494095CCE8C21FE01249.pbiviz.json"
+    }
+  ],
+  "visual": {
+    "guid": "ArrowBars3D3600DDDF8166494095CCE8C21FE01249",
+    "name": "ArrowBars3D",
+    "displayName": "Arrow Bars 3D by ASC",
+    "version": "3.8.2.3",
+    "description": "กราฟแท่ง 3D สไตล์ไล่สีต่อ category พร้อมป้าย % ไอคอนด้านบน รองรับ selection cross-filter, tooltip, responsive และปรับสีรายหมวดหมู่ได้",
+    "supportUrl": "https://www.asc.co.th",
+    "gitHubUrl": "https://github.com/asc06062k/custom-powerbi-viz/arrowBarsViz",
+    "visualClassName": "Visual"
+  },
+  "metadata": {
+    "pbivizjson": {
+      "resourceId": "rId0"
+    }
+  }
+}

@@ -1,0 +1,124 @@
+table Period
+	lineageTag: f169ed38-167e-4fcf-adf2-dd70dbe68fc0
+
+	column Date
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 3cdceb29-f0c0-409b-91ed-0f93e1af3358
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: d723fa41-43a4-4167-8a82-9c9e5bc6cb01
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		lineageTag: c167c5f7-e691-43c5-8caa-2b818de2aa78
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearQuarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 55459144-fa54-4704-b330-72c6c65b552c
+		summarizeBy: none
+		sourceColumn: YearQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonth
+		dataType: int64
+		formatString: 0
+		lineageTag: f6d220f2-05b3-4105-a4db-f16181d39b4f
+		summarizeBy: none
+		sourceColumn: YearMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Num'
+		dataType: int64
+		formatString: 0
+		lineageTag: 53b81653-498a-4ebe-9156-e50ddc28953b
+		summarizeBy: none
+		sourceColumn: Month Num
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter Year'
+		dataType: string
+		lineageTag: a411dc93-c620-4a4b-a591-c9eab229f1e4
+		summarizeBy: none
+		sourceColumn: Quarter Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Year'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1783e3e0-f83b-4e9f-b3e1-f303152d800a
+		summarizeBy: none
+		sourceColumn: Month Year
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Quarter
+		dataType: string
+		lineageTag: aaf29191-5995-411e-856c-bd61b38e37eb
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column __le_current_year
+		dataType: string
+		lineageTag: 9ae6248a-0332-43ab-b7dd-ceccb6aa6d97
+		summarizeBy: none
+		sourceColumn: __le_current_year
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Period = m
+		mode: import
+		source =
+				let
+				  Source = Excel.Workbook(File.Contents("D:\DATA\Dashboard\Budget Dashboard\budget data.xlsx"), null, true),
+				  BudgetSheet = Source{[Item = "Budget", Kind = "Sheet"]}[Data],
+				  BudgetHeaders = Table.PromoteHeaders(BudgetSheet, [PromoteAllScalars = true]),
+				  BudgetDates = Table.TransformColumnTypes(BudgetHeaders, {{"period", type date}}),
+				  StartDate = Date.StartOfYear(List.Min(BudgetDates[period])),
+				  EndDate = Date.EndOfYear(List.Max(BudgetDates[period])),
+				  DateList = List.Dates(StartDate, Duration.Days(EndDate - StartDate) + 1, #duration(1, 0, 0, 0)),
+				  DateTable = Table.FromList(DateList, Splitter.SplitByNothing(), {"Date"}),
+				  #"Changed Date Type" = Table.TransformColumnTypes(DateTable, {{"Date", type date}}),
+				  #"Added Year" = Table.AddColumn(#"Changed Date Type", "Year", each Date.Year([Date]), Int64.Type),
+				  #"Added Month" = Table.AddColumn(#"Added Year", "Month", each Date.ToText([Date], "MMM", "en-US"), type text),
+				  #"Added YearQuarter" = Table.AddColumn(#"Added Month", "YearQuarter", each [Year] * 100 + Date.QuarterOfYear([Date]), Int64.Type),
+				  #"Added YearMonth" = Table.AddColumn(#"Added YearQuarter", "YearMonth", each [Year] * 100 + Date.Month([Date]), Int64.Type),
+				  #"Added Month Num" = Table.AddColumn(#"Added YearMonth", "Month Num", each Date.Month([Date]), Int64.Type),
+				  #"Added Quarter Year" = Table.AddColumn(#"Added Month Num", "Quarter Year", each "Q" & Text.From(Date.QuarterOfYear([Date])) & ", " & Text.End(Text.From([Year]), 2), type text),
+				  #"Added Month Year" = Table.AddColumn(#"Added Quarter Year", "Month Year", each Date.StartOfMonth([Date]), type date),
+				  #"Added Quarter" = Table.AddColumn(#"Added Month Year", "Quarter", each "Q" & Text.From(Date.QuarterOfYear([Date])), type text),
+				  #"Added Current Year Flag" = Table.AddColumn(#"Added Quarter", "__le_current_year", each if [Year] <= Date.Year(Date.From(DateTime.LocalNow())) then "yes" else "no", type text)
+				in
+				  #"Added Current Year Flag"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
